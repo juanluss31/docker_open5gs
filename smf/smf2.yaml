@@ -1,5 +1,5 @@
 logger:
-    file: /open5gs/install/var/log/open5gs/smf.log
+    file: /open5gs/install/var/log/open5gs/smf2.log
 
 sbi:
     server:
@@ -15,31 +15,25 @@ smf:
     info:
       - s_nssai:
           - sst: 1
-            sd: 000001
+            sd: 000002
             dnn:
-              - internet
+              - private
     sbi:
-      - addr: SMF_IP
+      - addr: SMF2_IP
         port: 7777
     gtpc:
-      - addr: SMF_IP
+      - addr: SMF2_IP
     gtpu:
-      - addr: SMF_IP
+      - addr: SMF2_IP
     pfcp:
-      - addr: SMF_IP
+      - addr: SMF2_IP
     subnet:
-      - addr: 192.168.100.1/24
-        dnn: internet
+      - addr: 192.168.104.1/24
+        dnn: private
         dev: ogstun
-      - addr: 2001:230:cafe::1/48
+      - addr: 2001:230:fafe::1/48
         dev: ogstun
-        dnn: internet
-      - addr: 192.168.101.1/24
-        dnn: ims
-        dev: ogstun2
-      - addr: 2001:230:babe::1/48
-        dnn: ims
-        dev: ogstun2
+        dnn: private
     dns:
       - 8.8.8.8
       - 8.8.4.4
@@ -49,7 +43,7 @@ smf:
       - PCSCF_IP
     mtu: 1400
     metrics:
-      - addr: SMF_IP
+      - addr: SMF2_IP
         port: 9091
 
 scp:
@@ -66,5 +60,5 @@ nrf:
 
 upf:
     pfcp:
-      - addr: UPF_IP
-        dnn: internet
+      - addr: UPF2_IP
+        dnn: private
