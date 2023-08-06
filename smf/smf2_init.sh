@@ -34,7 +34,11 @@ export IF_NAME=$(ip r | awk '/default/ { print $5 }')
 [ ${#MNC} == 3 ] && EPC_DOMAIN="epc.mnc${MNC}.mcc${MCC}.3gppnetwork.org" || EPC_DOMAIN="epc.mnc0${MNC}.mcc${MCC}.3gppnetwork.org"
 
 cp /mnt/smf/smf2.yaml install/etc/open5gs/smf.yaml
-#cp /mnt/smf/smf2.conf install/etc/freeDiameter/smf.conf
+if [[ ${DEPLOY_MODE} == 4G ]];
+then
+    cp /mnt/smf/smf_4g.yaml install/etc/open5gs/smf.yaml
+fi
+cp /mnt/smf/smf.conf install/etc/freeDiameter/smf.conf
 cp /mnt/smf/make_certs.sh install/etc/freeDiameter
 
 sed -i 's|SMF2_IP|'$SMF2_IP'|g' install/etc/open5gs/smf.yaml
@@ -42,9 +46,13 @@ sed -i 's|SCP_IP|'$SCP_IP'|g' install/etc/open5gs/smf.yaml
 sed -i 's|NRF_IP|'$NRF_IP'|g' install/etc/open5gs/smf.yaml
 sed -i 's|UPF2_IP|'$UPF2_IP'|g' install/etc/open5gs/smf.yaml
 sed -i 's|PCSCF_IP|'$PCSCF_IP'|g' install/etc/open5gs/smf.yaml
-# sed -i 's|SMF2_IP|'$SMF2_IP'|g' install/etc/freeDiameter/smf.conf
-# sed -i 's|PCRF_IP|'$PCRF_IP'|g' install/etc/freeDiameter/smf.conf
-# sed -i 's|EPC_DOMAIN|'$EPC_DOMAIN'|g' install/etc/freeDiameter/smf.conf
+sed -i 's|SMF_DNS1|'$SMF_DNS1'|g' install/etc/open5gs/smf.yaml
+sed -i 's|SMF_DNS2|'$SMF_DNS2'|g' install/etc/open5gs/smf.yaml
+sed -i 's|SMF_IP|'$SMF2_IP'|g' install/etc/freeDiameter/smf.conf
+sed -i 's|PCRF_IP|'$PCRF_IP'|g' install/etc/freeDiameter/smf.conf
+sed -i 's|EPC_DOMAIN|'$EPC_DOMAIN'|g' install/etc/freeDiameter/smf.conf
+sed -i 's|PCRF_BIND_PORT|'$PCRF_BIND_PORT'|g' install/etc/freeDiameter/smf.conf
+sed -i 's|LD_LIBRARY_PATH|'$LD_LIBRARY_PATH'|g' install/etc/freeDiameter/smf.conf
 sed -i 's|EPC_DOMAIN|'$EPC_DOMAIN'|g' install/etc/freeDiameter/make_certs.sh
 
 # Generate TLS certificates
