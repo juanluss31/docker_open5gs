@@ -36,7 +36,9 @@ RF simulated setups:
 
 ```
 git clone https://github.com/herlesupreeth/docker_open5gs
-cd docker_open5gs/base
+cd docker_open5gs
+git checkout slices_2upf_2smf
+cd base
 docker build --no-cache --force-rm -t docker_open5gs .
 
 cd ../ims_base
