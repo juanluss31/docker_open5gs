@@ -361,6 +361,7 @@ services:
       - .env
     environment:
       - COMPONENT_NAME=pcscf-1
+      - DEPLOY_MODE=4G
     depends_on:
       - dns
       - mysql
