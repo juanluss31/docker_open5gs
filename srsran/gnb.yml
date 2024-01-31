@@ -21,7 +21,7 @@ cell_cfg:
   tac: 1                                                          # Tracking area code (needs to match the core configuration).
   pci: 1                                                          # Physical cell ID.
   nof_antennas_ul: 2                                              # MIMO UL Antennas.
-  nof_anetnnas_dl: 2                                              # MIMO DL Antennas.
+  nof_antennas_dl: 2                                              # MIMO DL Antennas.
 
 log:
   filename: /mnt/srsran/gnb.log                                   # Path of the log file.
