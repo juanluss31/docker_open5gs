@@ -43,5 +43,5 @@ pcap:
 
 metrics:
     enable_json_metrics: true                                     # Enable reporting metrics in JSON format
-    addr: "METRICS_IP"                                            # Metrics-server IP
+    addr: 172.22.0.36                                             # Metrics-server IP
     port: 9090                                                    # Metrics-server Port
