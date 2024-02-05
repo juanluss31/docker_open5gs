@@ -24,7 +24,7 @@ jobs:
 
 
       - name: Build the Docker image
-        run: docker build . --file /base/Dockerfile --tag docker_open5gs:latest
+        run: cd base && docker build . --file Dockerfile --tag docker_open5gs:latest
 
       - name: Push Image
         run: docker push docker_open5gs:latest
