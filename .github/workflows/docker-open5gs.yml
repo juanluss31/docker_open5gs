@@ -33,7 +33,7 @@ jobs:
         with:
           context: base
           push: true
-          tags: ${{ latest }}
+          tags: latest
 
 
       #- name: Build the Docker image
