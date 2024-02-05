@@ -1,11 +1,9 @@
-name: Docker Image CI
+name: Docker open5gs
 
 on:
   push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
-
+    paths:
+      - base/Dockerfile
 jobs:
 
   build:
@@ -24,7 +22,7 @@ jobs:
 
 
       - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+        run: docker build . --file /base/Dockerfile --tag docker_open5gs:latest
 
       - name: Push Image
-        run: docker push my-image-name:$(date +%s)
+        run: docker push docker_open5gs:latest
