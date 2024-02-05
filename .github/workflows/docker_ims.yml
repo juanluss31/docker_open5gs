@@ -23,7 +23,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build the Docker image
-        run: cd base && docker build --no-cache --force-rm -t juanluss31/docker_kamailio:latest .
+        run: cd ims_base && docker build --no-cache --force-rm -t juanluss31/docker_kamailio:latest .
 
       - name: Push Image
         run: docker push juanluss31/docker_kamailio:latest
