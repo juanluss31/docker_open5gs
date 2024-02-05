@@ -36,7 +36,7 @@ RF simulated setups:
 
 ```
 # Build docker images for open5gs EPC/5GC components
-git clone https://github.com/herlesupreeth/docker_open5gs
+git clone https://github.com/juanluss31/docker_open5gs
 cd docker_open5gs/base
 docker build --no-cache --force-rm -t docker_open5gs .
 
