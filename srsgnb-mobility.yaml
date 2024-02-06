@@ -21,4 +21,4 @@ services:
     expose:
       - "38412/sctp"
       - "2152/udp"
-  	network_mode: host
+    network_mode: host
