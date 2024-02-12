@@ -14,9 +14,6 @@ services:
     expose:
       - "27017/udp"
       - "27017/tcp"
-    ports:
-      - "27017:27017/tcp"
-      - "27017:27017/udp"
     networks:
       default:
         ipv4_address: ${MONGO_IP}
@@ -362,8 +359,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
     expose:
       - "3306/tcp"
-    ports:
-      - "3306:3306/tcp"
     networks:
       default:
         ipv4_address: ${MYSQL_IP}
