@@ -4,3 +4,6 @@ log/
 **/*.db
 **/*.db-shm
 **/*.db-wal
+srsran/metrics.json
+sa-vonr-mobility.yaml
+srsgnb-mobility.yaml
