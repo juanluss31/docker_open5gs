@@ -1,0 +1,183 @@
+[
+  {
+    _id: ObjectId('65ba3602a5d6d200170c9d8d'),
+    ambr: { downlink: { value: 1, unit: 3 }, uplink: { value: 1, unit: 3 } },
+    schema_version: 1,
+    msisdn: [],
+    imeisv: '3586938233440551',
+    mme_host: [],
+    mme_realm: [],
+    purge_flag: [],
+    access_restriction_data: 32,
+    subscriber_status: 0,
+    operator_determined_barring: 0,
+    network_access_mode: 0,
+    subscribed_rau_tau_timer: 12,
+    imsi: '001010000053536',
+    security: {
+      k: '32364C8E8C9162E0BFC4FBD7AEADB4AE',
+      amf: '8000',
+      op: null,
+      opc: '45F1BCC5F57668DEEC17C1D7B09C4811',
+      sqn: Long('4510')
+    },
+    slice: [
+      {
+        _id: ObjectId('65ba3602a5d6d200170c9d8e'),
+        sst: 1,
+        default_indicator: true,
+        session: [
+          {
+            qos: {
+              arp: {
+                priority_level: 8,
+                pre_emption_capability: 1,
+                pre_emption_vulnerability: 1
+              },
+              index: 9
+            },
+            ambr: {
+              downlink: { value: 1, unit: 3 },
+              uplink: { value: 1, unit: 3 }
+            },
+            _id: ObjectId('65ba3602a5d6d200170c9d8f'),
+            name: 'internet',
+            type: 1,
+            pcc_rule: []
+          },
+          {
+            qos: {
+              arp: {
+                priority_level: 1,
+                pre_emption_capability: 1,
+                pre_emption_vulnerability: 1
+              },
+              index: 5
+            },
+            ambr: {
+              downlink: { value: 1, unit: 3 },
+              uplink: { value: 1, unit: 3 }
+            },
+            _id: ObjectId('65ba3602a5d6d200170c9d90'),
+            name: 'ims',
+            type: 1,
+            pcc_rule: [
+              {
+                qos: {
+                  arp: {
+                    priority_level: 2,
+                    pre_emption_capability: 2,
+                    pre_emption_vulnerability: 2
+                  },
+                  mbr: {
+                    downlink: { value: 128, unit: 1 },
+                    uplink: { value: 128, unit: 1 }
+                  },
+                  gbr: {
+                    downlink: { value: 128, unit: 1 },
+                    uplink: { value: 128, unit: 1 }
+                  },
+                  index: 1
+                },
+                _id: ObjectId('65ba3602a5d6d200170c9d91'),
+                flow: []
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    __v: 0
+  },
+  {
+    _id: ObjectId('65ba3661a5d6d200170c9da6'),
+    ambr: { downlink: { value: 1, unit: 3 }, uplink: { value: 1, unit: 3 } },
+    schema_version: 1,
+    msisdn: [],
+    imeisv: '8666720641496203',
+    mme_host: [],
+    mme_realm: [],
+    purge_flag: [],
+    access_restriction_data: 32,
+    subscriber_status: 0,
+    operator_determined_barring: 0,
+    network_access_mode: 0,
+    subscribed_rau_tau_timer: 12,
+    imsi: '001010000053538',
+    security: {
+      k: '09498A36425BCE313DC932DEAC3D63CB',
+      amf: '8000',
+      op: null,
+      opc: 'B8E26F33567C588E103D1BF5FE1F002D',
+      sqn: Long('29350')
+    },
+    slice: [
+      {
+        _id: ObjectId('65ba3661a5d6d200170c9da7'),
+        sst: 1,
+        default_indicator: true,
+        session: [
+          {
+            qos: {
+              arp: {
+                priority_level: 8,
+                pre_emption_capability: 1,
+                pre_emption_vulnerability: 1
+              },
+              index: 9
+            },
+            ambr: {
+              downlink: { value: 1, unit: 3 },
+              uplink: { value: 1, unit: 3 }
+            },
+            _id: ObjectId('65ba3661a5d6d200170c9da8'),
+            name: 'internet',
+            type: 1,
+            pcc_rule: []
+          },
+          {
+            qos: {
+              arp: {
+                priority_level: 1,
+                pre_emption_capability: 1,
+                pre_emption_vulnerability: 1
+              },
+              index: 5
+            },
+            ambr: {
+              downlink: { value: 1, unit: 3 },
+              uplink: { value: 1, unit: 3 }
+            },
+            _id: ObjectId('65ba3661a5d6d200170c9da9'),
+            name: 'ims',
+            type: 1,
+            pcc_rule: [
+              {
+                qos: {
+                  arp: {
+                    priority_level: 2,
+                    pre_emption_capability: 2,
+                    pre_emption_vulnerability: 2
+                  },
+                  mbr: {
+                    downlink: { value: 128, unit: 1 },
+                    uplink: { value: 128, unit: 1 }
+                  },
+                  gbr: {
+                    downlink: { value: 128, unit: 1 },
+                    uplink: { value: 128, unit: 1 }
+                  },
+                  index: 1
+                },
+                _id: ObjectId('65ba3661a5d6d200170c9daa'),
+                flow: []
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    __v: 0
+  }
+]
+
