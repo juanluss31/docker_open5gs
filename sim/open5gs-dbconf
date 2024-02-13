@@ -22,6 +22,15 @@ display_help() {
 
 }
 
+MSISDN=(0001110 0001111 0001112 0001113 0001114 0001115 0001116 0001117 0001118 0001119)
+KI=(1B7F04D495107F31E8DF29E5514F28CA 58D702BE6603FA099D468D1296BC4072 EFF1295624972C632BB70D7863A4FC9F C581839E3F6AB86EE564F74150BF5D28 804786B423891CF2A8FA8FBD45E9D237 D1DACEF6CFDEFB4A7B5F7C3225C4D676 32364C8E8C9162E0BFC4FBD7AEADB4AE 95B2689668A3C24443CF45CB7781F066 09498A36425BCE313DC932DEAC3D63CB E6E0652EA80C26E70F6F343BAB533C12)
+OPC=(DD71BC1880AF9367E4A52ECABAC326FD 46FB1EA4A7A571F9DCF3E2ABC58FC9FD D97E5A24512DFAEDFE4EA3035AB8CFDE 02A9C1F2B246834BB64F023AA9595FDF F006BC07EC19D737CE0D042F7BBE79AC 8A9EED3E44D4C835121142641E7F836C 45F1BCC5F57668DEEC17C1D7B09C4811 577CB1FDAA2F8C39C4D7618D249C36E9 B8E26F33567C588E103D1BF5FE1F002D C7D61C44E23706765D0457A21A1B803A)
+ID=(0000053530 0000053531 0000053532 0000053533 0000053534 0000053535 0000053536 0000053537 0000053538 0000053539)
+MCC=001
+MNC=01
+$APN1=internet
+$APN2=ims
+
 while test $# -gt 0; do
   case "$1" in
     --db_uri*)
@@ -67,19 +76,15 @@ if [ "$1" = "reset" ]; then
     exit $?
 fi
 
-if [ "$1" = "add_ue_with_apn" ]; then
-    if [ "$#" -eq 5 ]; then
-        IMSI=$2
-        KI=$3
-        OPC=$4
-        APN=$5
+if [ "$1" = "add" ]; then
+    if [ "$#" -eq 2 ]; then
 
         mongosh --eval "db.subscribers.insertOne(
             {
                 \"_id\": new ObjectId(),
                 \"schema_version\": NumberInt(1),
-                \"imsi\": \"$IMSI\",
-                \"msisdn\": [\"$MSISDN\"],
+                \"imsi\": \"${MCC}${MNC}${ID[$2]}\",
+                \"msisdn\": [\"${MSISDN[$2]}\"],
                 \"imeisv\": [],
                 \"mme_host\": [],
                 \"mm_realm\": [],
@@ -182,9 +187,9 @@ if [ "$1" = "add_ue_with_apn" ]; then
                 }],
                 \"security\":
                 {
-                    \"k\" : \"$KI\",
+                    \"k\" : \"${KI[$2]}\",
                     \"op\" : null,
-                    \"opc\" : \"$OPC\",
+                    \"opc\" : \"${OPC[$2]}\",
                     \"amf\" : \"8000\",
                 },
                 \"ambr\" :
