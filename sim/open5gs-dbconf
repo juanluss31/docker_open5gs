@@ -28,8 +28,8 @@ OPC=(DD71BC1880AF9367E4A52ECABAC326FD 46FB1EA4A7A571F9DCF3E2ABC58FC9FD D97E5A245
 ID=(0000053530 0000053531 0000053532 0000053533 0000053534 0000053535 0000053536 0000053537 0000053538 0000053539)
 MCC=001
 MNC=01
-$APN1=internet
-$APN2=ims
+APN1="internet"
+APN2="ims"
 
 addSubscriber() {
     mongosh --eval "db.subscribers.insertOne(
@@ -207,6 +207,27 @@ fi
 
 if [ "$1" = "add" ]; then
     if [ "$#" -eq 2 ]; then
+    
+    	if [ "$2" = "all" ]; then
+            
+            for i in {0..9}
+            do
+            	IDs=${ID[$i]}
+                MSISDNs=${MSISDN[$i]}
+                KIs=${KI[$i]}
+                OPCs=${OPC[$i]}
+
+                echo "Adding subscriber:"
+                echo "  IMSI: ${MCC}${MNC}${IDs}"
+                echo "  MSISDN: ${MSISDNs}"
+                echo "  KI: ${KIs}"
+                echo "  OPC: ${OPCs}"
+                echo ""
+
+                #addSubscriber
+            done
+            exit 1
+        fi
 
         if [[ -n $2 && 0 -le $2 && $2 -le 9 ]]; then   
 
@@ -221,27 +242,9 @@ if [ "$1" = "add" ]; then
             echo "  KI: ${KIs}"
             echo "  OPC: ${OPCs}"
 
-            #addSubscriber
+            addSubscriber
             exit $?
 
-        fi
-
-        if [ "$2" = "all" ]; then
-            
-            for i in {0..9}
-                IDs=${ID[$i]}
-                MSISDNs=${MSISDN[$i]}
-                KIs=${KI[$i]}
-                OPCs=${OPC[$i]}
-
-                echo "Adding subscriber:"
-                echo "  IMSI: ${MCC}${MNC}${IDs}"
-                echo "  MSISDN: ${MSISDNs}"
-                echo "  KI: ${KIs}"
-                echo "  OPC: ${OPCs}"
-
-                #addSubscriber
-            exit 1
         fi
 
         echo "open5gs-dbctl: incorrect number of args, format is \"open5gs-dbconf add [0-9/all]\""
