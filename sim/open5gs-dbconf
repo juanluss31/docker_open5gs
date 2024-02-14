@@ -31,6 +31,135 @@ MNC=01
 $APN1=internet
 $APN2=ims
 
+addSubscriber() {
+    mongosh --eval "db.subscribers.insertOne(
+                {
+                    \"_id\": new ObjectId(),
+                    \"schema_version\": NumberInt(1),
+                    \"imsi\": \"${MCC}${MNC}${IDs}\",
+                    \"msisdn\": [\"${MSISDNs}\"],
+                    \"imeisv\": [],
+                    \"mme_host\": [],
+                    \"mm_realm\": [],
+                    \"purge_flag\": [],
+                    \"slice\":[
+                    {
+                        \"sst\": NumberInt(1),
+                        \"default_indicator\": true,
+                        \"session\": [
+                        {
+                            \"name\" : \"$APN1\",
+                            \"type\" : NumberInt(1),
+                            \"qos\" :
+                            { \"index\": NumberInt(9),
+                                \"arp\":
+                                {
+                                    \"priority_level\" : NumberInt(8),
+                                    \"pre_emption_capability\": NumberInt(1),
+                                    \"pre_emption_vulnerability\": NumberInt(1)
+                                }
+                            },
+                            \"ambr\":
+                            {
+                                \"downlink\":
+                                {
+                                    \"value\": NumberInt(1),
+                                    \"unit\": NumberInt(3)
+                                },
+                                \"uplink\":
+                                {
+                                    \"value\": NumberInt(1),
+                                    \"unit\": NumberInt(3)
+                                }
+                            },
+                            \"pcc_rule\": [],
+                            \"_id\": new ObjectId(),
+                        },
+                        {
+                            \"name\" : \"$APN2\",
+                            \"type\" : NumberInt(1),
+                            \"qos\" :
+                            { \"index\": NumberInt(5),
+                                \"arp\":
+                                {
+                                    \"priority_level\" : NumberInt(1),
+                                    \"pre_emption_capability\": NumberInt(1),
+                                    \"pre_emption_vulnerability\": NumberInt(1)
+                                }
+                            },
+                            \"ambr\":
+                            {
+                                \"downlink\":
+                                {
+                                    \"value\": NumberInt(1),
+                                    \"unit\": NumberInt(3)
+                                },
+                                \"uplink\":
+                                {
+                                    \"value\": NumberInt(1),
+                                    \"unit\": NumberInt(3)
+                                }
+                            },
+                            \"pcc_rule\": [
+                                {
+                                    \"qos\" : {
+                                        \"arp\": {
+                                            \"priority_level\" : NumberInt(2),
+                                            \"pre_emption_capability\": NumberInt(2),
+                                            \"pre_emption_vulnerability\": NumberInt(2)
+                                        },
+                                        \"mbr\": {
+                                            \"downlink\" : {
+                                                \"value\": NumberInt(128),
+                                                \"unit\": NumberInt(1)
+                                            },
+                                            \"uplink\" : {
+                                                \"value\": NumberInt(128),
+                                                \"unit\": NumberInt(1)
+                                            }
+                                        },
+                                        \"gbr\": {
+                                            \"downlink\" : {
+                                                \"value\": NumberInt(128),
+                                                \"unit\": NumberInt(1)
+                                            },
+                                            \"uplink\" : {
+                                                \"value\": NumberInt(128),
+                                                \"unit\": NumberInt(1)
+                                            }
+                                        },
+                                        \"index\": NumberInt(1),
+                                    },
+                                    \"_id\": new ObjectId(),
+                                    \"flow\": []
+                                }
+                            ],
+                            \"_id\": new ObjectId(),
+                        }],
+                        \"_id\": new ObjectId(),
+                    }],
+                    \"security\":
+                    {
+                        \"k\" : \"${KIs}\",
+                        \"op\" : null,
+                        \"opc\" : \"${OPCs}\",
+                        \"amf\" : \"8000\",
+                    },
+                    \"ambr\" :
+                    {
+                        \"downlink\" : { \"value\": NumberInt(1), \"unit\": NumberInt(3)},
+                        \"uplink\" : { \"value\": NumberInt(1), \"unit\": NumberInt(3)}
+                    },
+                    \"access_restriction_data\": 32,
+                    \"network_access_mode\": 0,
+                    \"subscriber_status\": 0,
+                    \"operator_determined_barring\": 0,
+                    \"subscribed_rau_tau_timer\": 12,
+                    \"__v\": 0
+                }
+                );" $DB_URI 
+}
+
 while test $# -gt 0; do
   case "$1" in
     --db_uri*)
@@ -79,136 +208,47 @@ fi
 if [ "$1" = "add" ]; then
     if [ "$#" -eq 2 ]; then
 
-        mongosh --eval "db.subscribers.insertOne(
-            {
-                \"_id\": new ObjectId(),
-                \"schema_version\": NumberInt(1),
-                \"imsi\": \"${MCC}${MNC}${ID[$2]}\",
-                \"msisdn\": [\"${MSISDN[$2]}\"],
-                \"imeisv\": [],
-                \"mme_host\": [],
-                \"mm_realm\": [],
-                \"purge_flag\": [],
-                \"slice\":[
-                {
-                    \"sst\": NumberInt(1),
-                    \"default_indicator\": true,
-                    \"session\": [
-                    {
-                        \"name\" : \"$APN1\",
-                        \"type\" : NumberInt(1),
-                        \"qos\" :
-                        { \"index\": NumberInt(9),
-                            \"arp\":
-                            {
-                                \"priority_level\" : NumberInt(8),
-                                \"pre_emption_capability\": NumberInt(1),
-                                \"pre_emption_vulnerability\": NumberInt(1)
-                            }
-                        },
-                        \"ambr\":
-                        {
-                            \"downlink\":
-                            {
-                                \"value\": NumberInt(1),
-                                \"unit\": NumberInt(3)
-                            },
-                            \"uplink\":
-                            {
-                                \"value\": NumberInt(1),
-                                \"unit\": NumberInt(3)
-                            }
-                        },
-                        \"pcc_rule\": [],
-                        \"_id\": new ObjectId(),
-                    },
-                    {
-                        \"name\" : \"$APN2\",
-                        \"type\" : NumberInt(1),
-                        \"qos\" :
-                        { \"index\": NumberInt(5),
-                            \"arp\":
-                            {
-                                \"priority_level\" : NumberInt(1),
-                                \"pre_emption_capability\": NumberInt(1),
-                                \"pre_emption_vulnerability\": NumberInt(1)
-                            }
-                        },
-                        \"ambr\":
-                        {
-                            \"downlink\":
-                            {
-                                \"value\": NumberInt(1),
-                                \"unit\": NumberInt(3)
-                            },
-                            \"uplink\":
-                            {
-                                \"value\": NumberInt(1),
-                                \"unit\": NumberInt(3)
-                            }
-                        },
-                        \"pcc_rule\": [
-                            {
-                                \"qos\" : {
-                                    \"arp\": {
-                                        \"priority_level\" : NumberInt(2),
-                                        \"pre_emption_capability\": NumberInt(2),
-                                        \"pre_emption_vulnerability\": NumberInt(2)
-                                    },
-                                    \"mbr\": {
-                                        \"downlink\" : {
-                                            \"value\": NumberInt(128),
-                                            \"unit\": NumberInt(1)
-                                        },
-                                        \"uplink\" : {
-                                            \"value\": NumberInt(128),
-                                            \"unit\": NumberInt(1)
-                                        }
-                                    },
-                                    \"gbr\": {
-                                        \"downlink\" : {
-                                            \"value\": NumberInt(128),
-                                            \"unit\": NumberInt(1)
-                                        },
-                                        \"uplink\" : {
-                                            \"value\": NumberInt(128),
-                                            \"unit\": NumberInt(1)
-                                        }
-                                    },
-                                    \"index\": NumberInt(1),
-                                },
-                                \"_id\": new ObjectId(),
-                                \"flow\": []
-                            }
-                        ],
-                        \"_id\": new ObjectId(),
-                    }],
-                    \"_id\": new ObjectId(),
-                }],
-                \"security\":
-                {
-                    \"k\" : \"${KI[$2]}\",
-                    \"op\" : null,
-                    \"opc\" : \"${OPC[$2]}\",
-                    \"amf\" : \"8000\",
-                },
-                \"ambr\" :
-                {
-                    \"downlink\" : { \"value\": NumberInt(1), \"unit\": NumberInt(3)},
-                    \"uplink\" : { \"value\": NumberInt(1), \"unit\": NumberInt(3)}
-                },
-                \"access_restriction_data\": 32,
-                \"network_access_mode\": 0,
-                \"subscriber_status\": 0,
-                \"operator_determined_barring\": 0,
-                \"subscribed_rau_tau_timer\": 12,
-                \"__v\": 0
-            }
-            );" $DB_URI
-        exit $?
+        if [[ -n $2 && 0 -le $2 && $2 -le 9 ]]; then   
+
+            IDs=${ID[$2]}
+            MSISDNs=${MSISDN[$2]}
+            KIs=${KI[$2]}
+            OPCs=${OPC[$2]}
+
+            echo "Adding subscriber:"
+            echo "  IMSI: ${MCC}${MNC}${IDs}"
+            echo "  MSISDN: ${MSISDNs}"
+            echo "  KI: ${KIs}"
+            echo "  OPC: ${OPCs}"
+
+            #addSubscriber
+            exit $?
+
+        fi
+
+        if [ "$2" = "all" ]; then
+            
+            for i in {0..9}
+                IDs=${ID[$i]}
+                MSISDNs=${MSISDN[$i]}
+                KIs=${KI[$i]}
+                OPCs=${OPC[$i]}
+
+                echo "Adding subscriber:"
+                echo "  IMSI: ${MCC}${MNC}${IDs}"
+                echo "  MSISDN: ${MSISDNs}"
+                echo "  KI: ${KIs}"
+                echo "  OPC: ${OPCs}"
+
+                #addSubscriber
+            exit 1
+        fi
+
+        echo "open5gs-dbctl: incorrect number of args, format is \"open5gs-dbconf add [0-9/all]\""
+        exit 1
     fi
 
-    echo "open5gs-dbctl: incorrect number of args, format is \"open5gs-dbctl add_ue_with_apn imsi key opc apn\""
+    echo "open5gs-dbctl: incorrect number of args, format is \"open5gs-dbconf add [0-9/all]\""
     exit 1
 fi
 
