@@ -1,0 +1,386 @@
+#  completion                               -*- shell-script -*-
+
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# !
+# ! Note:
+# !
+# ! THIS SCRIPT HAS BEEN AUTOMATICALLY GENERATED USING
+# ! swagger-codegen (https://github.com/swagger-api/swagger-codegen)
+# ! FROM SWAGGER SPECIFICATION IN JSON.
+# !
+# !
+# !
+# ! System wide installation:
+# !
+# ! $ sudo cp .bash-completion /etc/bash-completion.d/
+# !
+# !
+# ! User home installation (add this line to .bash_profile):
+# !
+# ! [ -r ~/.bash-completion ] && source ~/.bash-completion
+# !
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+declare -A mime_type_abbreviations
+# text/*
+mime_type_abbreviations["text"]="text/plain"
+mime_type_abbreviations["html"]="text/html"
+mime_type_abbreviations["md"]="text/x-markdown"
+mime_type_abbreviations["csv"]="text/csv"
+mime_type_abbreviations["css"]="text/css"
+mime_type_abbreviations["rtf"]="text/rtf"
+# application/*
+mime_type_abbreviations["json"]="application/json"
+mime_type_abbreviations["xml"]="application/xml"
+mime_type_abbreviations["yaml"]="application/yaml"
+mime_type_abbreviations["js"]="application/javascript"
+mime_type_abbreviations["bin"]="application/octet-stream"
+mime_type_abbreviations["rdf"]="application/rdf+xml"
+# image/*
+mime_type_abbreviations["jpg"]="image/jpeg"
+mime_type_abbreviations["png"]="image/png"
+mime_type_abbreviations["gif"]="image/gif"
+mime_type_abbreviations["bmp"]="image/bmp"
+mime_type_abbreviations["tiff"]="image/tiff"
+
+
+#
+# Check if this is OSX, if so defined custom init_completion
+#
+if [[ `uname` =~ "Darwin" ]]; then
+    __osx_init_completion()
+    {
+        COMPREPLY=()
+        _get_comp_words_by_ref cur prev words cword
+    }
+fi
+
+_()
+{
+    local cur
+    local prev
+    local words
+    local cword
+
+    # The reference of currently selected REST operation
+    local operation=""
+
+    # The list of available operation in the REST service
+    # It's modelled as an associative array for efficient key lookup
+    declare -A operations
+    operations["create APN Object"]=1
+    operations["deletePyHssApnGet"]=1
+    operations["getPyHssApnGet"]=1
+    operations["getPyHssOamAllApNs"]=1
+    operations["update APN Object"]=1
+    operations["create AUC Object"]=1
+    operations["deletePyHssAucGet"]=1
+    operations["getPyHssAucAll"]=1
+    operations["getPyHssAucGet"]=1
+    operations["getPyHssAucGetIccid"]=1
+    operations["getPyHssAucGetImsi"]=1
+    operations["update AUC Object"]=1
+    operations["create ChargingRule Object"]=1
+    operations["deletePyHssChargingRuleGet"]=1
+    operations["getPyHssChargingRuleAll"]=1
+    operations["getPyHssChargingRuleGet"]=1
+    operations["update chargingRuleId Object"]=1
+    operations["create EIR Object"]=1
+    operations["deletePyHssEirGet"]=1
+    operations["deletePyHssEirHistory"]=1
+    operations["getPyHssEirAll"]=1
+    operations["getPyHssEirAllHistory"]=1
+    operations["getPyHssEirGet"]=1
+    operations["getPyHssEirHistory"]=1
+    operations["getPyHssEirTac"]=1
+    operations["update eir Object"]=1
+    operations["create ChargingRule Object"]=1
+    operations["getPyHssGeored"]=1
+    operations["create IMS SUBSCRIBER Object"]=1
+    operations["deletePyHssImsSubscriberGet"]=1
+    operations["getPyHssImsSubscriberAll"]=1
+    operations["getPyHssImsSubscriberGet"]=1
+    operations["getPyHssImsSubscriberImsi"]=1
+    operations["getPyHssImsSubscriberMsisdn"]=1
+    operations["update IMS SUBSCRIBER Object"]=1
+    operations["getPyHssOamPeers"]=1
+    operations["getPyHssOamPing"]=1
+    operations["getPyHssOamReconcileIms"]=1
+    operations["getPyHssOamRollbackLast"]=1
+    operations["getPyHssOamRollbackLastTable"]=1
+    operations["getPyHssOamServingSubs"]=1
+    operations["getPyHssOamServingSubsIms"]=1
+    operations["getPyHssOamServingSubsPcrf"]=1
+    operations["getPyHssOperationLogLast"]=1
+    operations["getPyHssOperationLogList"]=1
+    operations["getPyHssOperationLogListTable"]=1
+    operations["getPyHssOamGetPcrfSubscriber"]=1
+    operations["getPyHssOamGetPcrfSubscriberAllApn"]=1
+    operations["getPyHssPcrfComplete"]=1
+    operations["getPyHssPcrfSubscriberRouting"]=1
+    operations["push Charging Rule to a Subscriber"]=1
+    operations["push CLR (Cancel Location Request) to MME"]=1
+    operations["create SUBSCRIBER Object"]=1
+    operations["create Subscriber Routing Object"]=1
+    operations["deletePyHssSubscriberGet"]=1
+    operations["deletePyHssSubscriberSubscriberRouting"]=1
+    operations["getPyHssSubscriberAll"]=1
+    operations["getPyHssSubscriberGet"]=1
+    operations["getPyHssSubscriberImsi"]=1
+    operations["getPyHssSubscriberMsisdn"]=1
+    operations["getPyHssSubscriberSubscriberRouting"]=1
+    operations["update SUBSCRIBER Object"]=1
+    operations["update SUBSCRIBERROUTING Object"]=1
+    operations["create Attribute Object"]=1
+    operations["deletePyHssAttributesGet"]=1
+    operations["getPyHssAttributesGet"]=1
+    operations["getPyHssSubscriberAttributesAll"]=1
+    operations["update Attribute Object"]=1
+    operations["create TFT Object"]=1
+    operations["deletePyHssTftGet"]=1
+    operations["getPyHssTftAll"]=1
+    operations["getPyHssTftGet"]=1
+    operations["update IMS tftId Object"]=1
+
+    # An associative array of operations to their parameters
+    # Only include path, query and header parameters
+    declare -A operation_parameters
+    operation_parameters["create APN Object"]=""
+    operation_parameters["deletePyHssApnGet"]="apn_id= "
+    operation_parameters["getPyHssApnGet"]="apn_id= "
+    operation_parameters["getPyHssOamAllApNs"]="page= page_size= "
+    operation_parameters["update APN Object"]="apn_id= "
+    operation_parameters["create AUC Object"]=""
+    operation_parameters["deletePyHssAucGet"]="auc_id= "
+    operation_parameters["getPyHssAucAll"]="page= page_size= "
+    operation_parameters["getPyHssAucGet"]="auc_id= "
+    operation_parameters["getPyHssAucGetIccid"]="iccid= "
+    operation_parameters["getPyHssAucGetImsi"]="imsi= "
+    operation_parameters["update AUC Object"]="auc_id= "
+    operation_parameters["create ChargingRule Object"]=""
+    operation_parameters["deletePyHssChargingRuleGet"]="charging_rule_id= "
+    operation_parameters["getPyHssChargingRuleAll"]="page= page_size= "
+    operation_parameters["getPyHssChargingRuleGet"]="charging_rule_id= "
+    operation_parameters["update chargingRuleId Object"]="charging_rule_id= "
+    operation_parameters["create EIR Object"]=""
+    operation_parameters["deletePyHssEirGet"]="eir_id= "
+    operation_parameters["deletePyHssEirHistory"]="attribute= "
+    operation_parameters["getPyHssEirAll"]="page= page_size= "
+    operation_parameters["getPyHssEirAllHistory"]="page= page_size= "
+    operation_parameters["getPyHssEirGet"]="eir_id= "
+    operation_parameters["getPyHssEirHistory"]="attribute= "
+    operation_parameters["getPyHssEirTac"]="imei= "
+    operation_parameters["update eir Object"]="eir_id= "
+    operation_parameters["create ChargingRule Object"]=""
+    operation_parameters["getPyHssGeored"]=""
+    operation_parameters["create IMS SUBSCRIBER Object"]=""
+    operation_parameters["deletePyHssImsSubscriberGet"]="ims_subscriber_id= "
+    operation_parameters["getPyHssImsSubscriberAll"]="page= page_size= "
+    operation_parameters["getPyHssImsSubscriberGet"]="ims_subscriber_id= "
+    operation_parameters["getPyHssImsSubscriberImsi"]="imsi= "
+    operation_parameters["getPyHssImsSubscriberMsisdn"]="msisdn= "
+    operation_parameters["update IMS SUBSCRIBER Object"]="ims_subscriber_id= "
+    operation_parameters["getPyHssOamPeers"]=""
+    operation_parameters["getPyHssOamPing"]=""
+    operation_parameters["getPyHssOamReconcileIms"]="imsi= "
+    operation_parameters["getPyHssOamRollbackLast"]=""
+    operation_parameters["getPyHssOamRollbackLastTable"]="operation_id= "
+    operation_parameters["getPyHssOamServingSubs"]=""
+    operation_parameters["getPyHssOamServingSubsIms"]=""
+    operation_parameters["getPyHssOamServingSubsPcrf"]=""
+    operation_parameters["getPyHssOperationLogLast"]=""
+    operation_parameters["getPyHssOperationLogList"]="page= page_size= "
+    operation_parameters["getPyHssOperationLogListTable"]="table_name= page= page_size= "
+    operation_parameters["getPyHssOamGetPcrfSubscriber"]="imsi= apn_id= "
+    operation_parameters["getPyHssOamGetPcrfSubscriberAllApn"]="imsi= "
+    operation_parameters["getPyHssPcrfComplete"]="charging_rule_id= "
+    operation_parameters["getPyHssPcrfSubscriberRouting"]="subscriber_routing= "
+    operation_parameters["push Charging Rule to a Subscriber"]=""
+    operation_parameters["push CLR (Cancel Location Request) to MME"]="imsi= "
+    operation_parameters["create SUBSCRIBER Object"]=""
+    operation_parameters["create Subscriber Routing Object"]=""
+    operation_parameters["deletePyHssSubscriberGet"]="subscriber_id= "
+    operation_parameters["deletePyHssSubscriberSubscriberRouting"]="subscriber_id= apn_id= "
+    operation_parameters["getPyHssSubscriberAll"]="page= page_size= "
+    operation_parameters["getPyHssSubscriberGet"]="subscriber_id= "
+    operation_parameters["getPyHssSubscriberImsi"]="imsi= "
+    operation_parameters["getPyHssSubscriberMsisdn"]="msisdn= "
+    operation_parameters["getPyHssSubscriberSubscriberRouting"]="subscriber_id= apn_id= "
+    operation_parameters["update SUBSCRIBER Object"]="subscriber_id= "
+    operation_parameters["update SUBSCRIBERROUTING Object"]="subscriber_routing_id= "
+    operation_parameters["create Attribute Object"]=""
+    operation_parameters["deletePyHssAttributesGet"]="subscriber_attributes_id= "
+    operation_parameters["getPyHssAttributesGet"]="subscriber_id= "
+    operation_parameters["getPyHssSubscriberAttributesAll"]="page= page_size= "
+    operation_parameters["update Attribute Object"]="subscriber_attributes_id= "
+    operation_parameters["create TFT Object"]=""
+    operation_parameters["deletePyHssTftGet"]="tft_id= "
+    operation_parameters["getPyHssTftAll"]="page= page_size= "
+    operation_parameters["getPyHssTftGet"]="tft_id= "
+    operation_parameters["update IMS tftId Object"]="tft_id= "
+
+    # An associative array of possible values for enum parameters
+    declare -A operation_parameters_enum_values
+
+    #
+    # Check if this is OSX and use special __osx_init_completion function
+    #
+    if [[ `uname` =~ "Darwin" ]]; then
+        __osx_init_completion || return
+    else
+        _init_completion -s || return
+    fi
+
+
+    # Check if operation is already in the command line provided
+    for word in "${words[@]}"; do
+        if [[ -n $word && ${operations[$word]} ]]; then
+            operation="${word}"
+        fi
+    done
+
+    if [[ -z $operation ]]; then
+        case $prev in
+            --ciphers|--connect-timeout|-C|--continue-at|-F|--form|--form-string|\
+            --ftp-account|--ftp-alternative-to-user|-P|--ftp-port|-H|--header|-h|\
+            --help|--hostpubmd5|--keepalive-time|--krb|--limit-rate|--local-port|\
+            --mail-from|--mail-rcpt|--max-filesize|--max-redirs|-m|--max-time|\
+            --pass|--proto|--proto-redir|--proxy-user|--proxy1.0|-Q|--quote|-r|\
+            --range|-X|--request|--retry|--retry-delay|--retry-max-time|\
+            --socks5-gssapi-service|-t|--telnet-option|--tftp-blksize|-z|\
+            --time-cond|--url|-u|--user|-A|--user-agent|-V|--version|-w|\
+            --write-out|--resolve|--tlsuser|--tlspassword|--about)
+                return
+                ;;
+            -K|--config|-b|--cookie|-c|--cookie-jar|-D|--dump-header|--egd-file|\
+            --key|--libcurl|-o|--output|--random-file|-T|--upload-file|--trace|\
+            --trace-ascii|--netrc-file)
+                _filedir
+                return
+                ;;
+            --cacert|-E|--cert)
+                _filedir '@(c?(e)rt|cer|pem|der)'
+                return
+                ;;
+            --capath)
+                _filedir -d
+                return
+                ;;
+            --cert-type|--key-type)
+                COMPREPLY=( $( compgen -W 'DER PEM ENG' -- "$cur" ) )
+                return
+                ;;
+            --crlfile)
+                _filedir crl
+                return
+                ;;
+            -d|--data|--data-ascii|--data-binary|--data-urlencode)
+                if [[ $cur == \@* ]]; then
+                    cur=${cur:1}
+                    _filedir
+                    COMPREPLY=( "${COMPREPLY[@]/#/@}" )
+                fi
+                return
+                ;;
+            --delegation)
+                COMPREPLY=( $( compgen -W 'none policy always' -- "$cur" ) )
+                return
+                ;;
+            --engine)
+                COMPREPLY=( $( compgen -W 'list' -- "$cur" ) )
+                return
+                ;;
+            --ftp-method)
+                COMPREPLY=( $( compgen -W 'multicwd nocwd singlecwd' -- "$cur" ) )
+                return
+                ;;
+            --ftp-ssl-ccc-mode)
+                COMPREPLY=( $( compgen -W 'active passive' -- "$cur" ) )
+                return
+                ;;
+            --interface)
+                _available_interfaces -a
+                return
+                ;;
+            -x|--proxy|--socks4|--socks4a|--socks5|--socks5-hostname)
+                _known_hosts_real
+                return
+                ;;
+            --pubkey)
+                _filedir pub
+                return
+                ;;
+            --stderr)
+                COMPREPLY=( $( compgen -W '-' -- "$cur" ) )
+                _filedir
+                return
+                ;;
+            --tlsauthtype)
+                COMPREPLY=( $( compgen -W 'SRP' -- "$cur" ) )
+                return
+                ;;
+            --host)
+                COMPREPLY=( $( compgen -W 'http:// https://' -- "$cur" ) )
+                return
+                ;;
+            -ct|--content-type|-ac|--accept)
+                COMPREPLY=( $( compgen -W '${!mime_type_abbreviations[*]}' -- "$cur" ) )
+                return
+                ;;
+        esac
+    fi
+
+    #
+    # Complete the server address based on ~/.ssh/known_hosts
+    # and ~/.ssh/config
+    #
+    local prefix=${COMP_WORDS[COMP_CWORD-2]}
+    local colon=${COMP_WORDS[COMP_CWORD-1]}
+    if [[ "$colon" == ":" && ( $prefix == "https" || $prefix == "http" ) ]]; then
+        COMPREPLY=()
+        local comp_ssh_hosts=`[[ -f ~/.ssh/known_hosts ]] && \
+                              ( cat ~/.ssh/known_hosts | \
+                              grep '^[a-zA-Z0-9]' | \
+                              cut -f 1 -d ' ' | \
+                              sed -e s/,.*//g | \
+                              grep -v ^# | \
+                              uniq | \
+                              grep -v "\[" ) ;
+                              [[ -f ~/.ssh/config ]] && \
+                              ( cat ~/.ssh/config | \
+                              grep "^Host " | \
+                              awk '{print $2}' )`
+        COMPREPLY=( $( compgen -P '//' -W '${comp_ssh_hosts}' -- "${cur:2}") )
+        return
+    fi
+
+    #
+    # Complete the  and cURL's arguments
+    #
+    if [[ $cur == -* ]]; then
+        COMPREPLY=( $( compgen -W '$(_parse_help curl) $(_parse_help $1)' -- "$cur" ) )
+        return
+    fi
+
+    #
+    # If the argument starts with a letter this could be either an operation
+    # or an operation parameter
+    # When $cur is empty, suggest the list of operations by default
+    #
+    if [[ $cur =~ ^[A-Za-z_0-9]* ]]; then
+        # If operation has not been yet selected, suggest the list of operations
+        # otherwise suggest arguments of this operation as declared in the
+        # Swagger specification
+        if [[ -z $operation ]]; then
+            COMPREPLY=( $(compgen -W '${!operations[*]}' -- ${cur}) )
+        else
+            COMPREPLY=( $(compgen -W '${operation_parameters[$operation]}' -- ${cur}) )
+            compopt -o nospace
+        fi
+        return
+    fi
+
+} &&
+complete -F _ 
+
+# ex: ts=4 sw=4 et filetype=sh
