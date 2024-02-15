@@ -1,9 +1,7 @@
 #!/bin/bash
 
-version=0.10.3
-
 display_help() {
-    echo "open5gs-dbconf: Open5GS Database Configuration Tool ($version)"
+    echo "open5gs-dbconf: Open5GS Database Configuration Tool"
     echo "FLAGS: --db_uri=mongodb://localhost"
     echo "COMMANDS:" >&2
     echo "   remove {imsi}: removes a user from the database"
