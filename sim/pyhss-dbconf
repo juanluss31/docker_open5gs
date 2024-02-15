@@ -1,0 +1,71 @@
+#!/bin/bash
+
+display_help() {
+    echo "pyhss-dbconf: PyHSS Database Configuration Tool"
+    echo "FLAGS: --db_ip=127.0.0.1"
+    echo "COMMANDS:" >&2
+    echo "   apn"
+    echo "      apn put [APN]: Create new APN"
+    echo "      apn get: Get all APNs"
+    echo "      apn delete [APN_id]: Delete specified APN"
+    echo "      apn get [APN_id]: Get data for specified APN"
+    echo "   install: installs jq (needed to process JSON)"
+
+}
+
+while test $# -gt 0; do
+  case "$1" in
+    --db_ip*)
+      DB_IP=`echo $1 | sed -e 's/^[^=]*=//g'`
+      shift
+      ;;
+    *)
+      break
+      ;;
+  esac
+done
+
+DB_IP="172.0.0.1"
+
+if [ "$1" = "apn" ]; then
+
+    if [ "$2" = "get" ]; then
+        curl -X 'GET' \
+            'http://192.168.0.114:8080/apn/list?page=0&page_size=200' \
+            -H 'accept: application/json'
+        exit $?
+    fi
+
+    if [ "$2" = "put" ]; then
+        curl -X 'PUT' \
+            'http://192.168.0.114:8080/apn/' \
+            -H 'accept: application/json' \
+            -H 'Content-Type: application/json' \
+            -d '{
+            "apn_id": 0,
+            "apn": "string",
+            "ip_version": 0,
+            "pgw_address": "string",
+            "sgw_address": "string",
+            "charging_characteristics": "stri",
+            "apn_ambr_dl": 0,
+            "apn_ambr_ul": 0,
+            "qci": 0,
+            "arp_priority": 0,
+            "arp_preemption_capability": true,
+            "arp_preemption_vulnerability": true,
+            "charging_rule_list": "string"
+            }'
+        exit $?
+    fi
+
+    exit 1
+fi
+
+if [ "$1" = "install" ]; then
+    sudo apt-get install -y jq
+    exit 1
+fi
+
+display_help
+
