@@ -222,7 +222,7 @@ if [ "$1" = "add" ]; then
                 echo "  OPC: ${OPCs}"
                 echo ""
 
-                #addSubscriber
+                addSubscriber
             done
             exit 1
         fi
