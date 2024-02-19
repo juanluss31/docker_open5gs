@@ -1,7 +1,7 @@
 version: '3'
 services:
   srsgnb:
-    image: docker_srsran
+    image: juanluss31/docker_srsran:latest
     container_name: srsgnb
     stdin_open: true
     tty: true

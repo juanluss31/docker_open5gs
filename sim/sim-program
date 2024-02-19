@@ -20,7 +20,7 @@ MCC=001
 MNC=01
 SMSC=0005555
 ACC=0001
-[ ${#MNC} == 3 ] && IMS_DOMAIN="ims.mnc${MNC}.mcc${MCC}.3gppnetwork.org" || IMS_DOMAIN="ims.mnc0${MNC}.mcc${MCC}.3gppnetwork.org"
+[ ${#MNC} == 3 ] && IMS_HDOMAIN="ims.mnc${MNC}.mcc${MCC}.3gppnetwork.org" || IMS_HDOMAIN="ims.mnc0${MNC}.mcc${MCC}.3gppnetwork.org"
 
 PIN_ADM=(85903454 42970400 99089163 95466357 67215927 26323548 98936148 83173246 59879048 50381267)
 ICCID=(8988211000000535305 8988211000000535313 8988211000000535321 8988211000000535339 8988211000000535347 8988211000000535354 8988211000000535362 8988211000000535370 8988211000000535388 8988211000000535396)
@@ -37,7 +37,7 @@ KIK1=(8ACB9DFF5A09D156D62107016C1B5E96 D5EA389093F96E1E0D7FEE5E301FD199 373C3632
 
 if [ "$1" == "card" ]; then
     if [[ -n $2 && 0 -le $2 && $2 -le 9 ]]; then
-        ../../pysim/pySim-prog.py -p0 \
+        echo "../../pysim/pySim-prog.py -p0 \
         -a ${PIN_ADM[$2]} \
         -n $OPERATOR \
         -c $COUNTRY_CODE \
@@ -50,9 +50,11 @@ if [ "$1" == "card" ]; then
         -k ${KI[$2]} \
         -o ${OPC[$2]} \
         --acc=$ACC \
-        --ims-hdomain=$IMS_HDOMAIN \
-        --impi=${MCC}${MNC}${ID[$2]}@$IMS_HDOMAIN \
-        --impu="sip:${MCC}${MNC}${ID[$2]}@$IMS_HDOMAIN tel:${MSISDN[$2]} sip:${MSISDN[$2]}@$IMS_HDOMAIN"
+        --write-csv=prueba.csv"
+ #       --ims-hdomain=$IMS_HDOMAIN \
+ #       --impi=${MCC}${MNC}${ID[$2]}@$IMS_HDOMAIN \
+ #       --impu="sip:${MCC}${MNC}${ID[$2]}@$IMS_HDOMAIN" \
+
     
         exit 1
     fi

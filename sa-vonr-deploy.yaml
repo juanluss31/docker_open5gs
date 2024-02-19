@@ -319,7 +319,7 @@ services:
         ipv4_address: ${DNS_IP}
   rtpengine:
     image: docker_rtpengine
-    container_name: juanluss31/docker_rtpengine:latest
+    container_name: rtpengine
     privileged: true
     env_file:
       - .env

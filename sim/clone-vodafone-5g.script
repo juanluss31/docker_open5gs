@@ -5,7 +5,7 @@ set echo true
 # this script will activate all 5G related services and files.
 
 # TODO: add your card-specific ADM pin at the end of the verify_adm line below
-verify_adm 11111111
+verify_adm 85903454
 
 # activate any 5G related services in EF.UST
 select ADF.USIM
