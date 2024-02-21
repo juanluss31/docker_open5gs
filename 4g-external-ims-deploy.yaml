@@ -18,7 +18,7 @@ services:
       default:
         ipv4_address: ${MONGO_IP}
   webui:
-    image: docker_open5gs
+    image: juanluss31/docker_open5gs:latest
     container_name: webui
     depends_on:
       - mongo
@@ -38,7 +38,7 @@ services:
       default:
         ipv4_address: ${WEBUI_IP}
   hss:
-    image: docker_open5gs
+    image: juanluss31/docker_open5gs:latest
     container_name: hss
     env_file:
       - .env
@@ -60,7 +60,7 @@ services:
       default:
         ipv4_address: ${HSS_IP}
   sgwc:
-    image: docker_open5gs
+    image: juanluss31/docker_open5gs:latest
     depends_on:
       - smf
       - upf
@@ -81,7 +81,7 @@ services:
       default:
         ipv4_address: ${SGWC_IP}
   sgwu:
-    image: docker_open5gs
+    image: juanluss31/docker_open5gs:latest
     depends_on:
       - smf
       - upf
@@ -104,7 +104,7 @@ services:
       default:
         ipv4_address: ${SGWU_IP}
   smf:
-    image: docker_open5gs
+    image: juanluss31/docker_open5gs:latest
     container_name: smf
     env_file:
       - .env
@@ -129,7 +129,7 @@ services:
       default:
         ipv4_address: ${SMF_IP}
   upf:
-    image: docker_open5gs
+    image: juanluss31/docker_open5gs:latest
     depends_on:
       - smf
     container_name: upf
@@ -154,7 +154,7 @@ services:
     #   - net.ipv6.conf.all.disable_ipv6=0
     network_mode: host
   mme:
-    image: docker_open5gs
+    image: juanluss31/docker_open5gs:latest
     depends_on:
       - hss
       - sgwc
@@ -186,7 +186,7 @@ services:
       default:
         ipv4_address: ${MME_IP}
   pcrf:
-    image: docker_open5gs
+    image: juanluss31/docker_open5gs:latest
     container_name: pcrf
     env_file:
       - .env
@@ -211,8 +211,7 @@ services:
       default:
         ipv4_address: ${PCRF_IP}
   dns:
-    build: ./dns
-    image: docker_dns
+    image: juanluss31/docker_dns:latest
     container_name: dns
     env_file:
       - .env
@@ -226,8 +225,7 @@ services:
       default:
         ipv4_address: ${DNS_IP}
   mysql:
-    build: ./mysql
-    image: docker_mysql
+    image: juanluss31/docker_mysql:latest
     container_name: mysql
     env_file:
       - .env
@@ -241,8 +239,7 @@ services:
       default:
         ipv4_address: ${MYSQL_IP}
   pyhss:
-    build: ./pyhss
-    image: docker_pyhss
+    image: juanluss31/docker_pyhss:latest
     container_name: pyhss
     dns: ${DNS_IP}
     volumes:
@@ -266,8 +263,7 @@ services:
       default:
         ipv4_address: ${PYHSS_IP}
   osmomsc:
-    build: ./osmomsc
-    image: docker_osmomsc
+    image: juanluss31/docker_osmomsc:latest
     container_name: osmomsc
     volumes:
       - ./osmomsc:/mnt/osmomsc
@@ -286,8 +282,7 @@ services:
       default:
         ipv4_address: ${OSMOMSC_IP}
   osmohlr:
-    build: ./osmohlr
-    image: docker_osmohlr
+    image: juanluss31/docker_osmohlr:latest
     container_name: osmohlr
     volumes:
       - ./osmohlr:/mnt/osmohlr
@@ -303,8 +298,7 @@ services:
       default:
         ipv4_address: ${OSMOHLR_IP}
   metrics:
-    build: ./metrics
-    image: docker_metrics
+    image: juanluss31/docker_metrics:latest
     container_name: metrics
     env_file:
       - .env

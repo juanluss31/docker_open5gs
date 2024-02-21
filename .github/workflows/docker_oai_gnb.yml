@@ -1,9 +1,9 @@
-name: Docker IMS
+name: Docker oai gnb
 
 on:
   push:
     paths:
-      - ims_base/Dockerfile
+      - oai/gnb_dockerfile
   workflow_dispatch:
   
 jobs:
@@ -23,7 +23,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build the Docker image
-        run: cd ims_base && docker build --no-cache --force-rm -t juanluss31/docker_kamailio:latest .
+        run: cd oai && docker build --no-cache --force-rm -t juanluss31/docker_oai_gnb:latest .
 
       - name: Push Image
-        run: docker push juanluss31/docker_kamailio:latest
+        run: docker push juanluss31/docker_oai_gnb:latest

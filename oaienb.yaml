@@ -1,10 +1,7 @@
 version: '3'
 services:
   oaienb:
-    build:
-      context: oai
-      dockerfile: enb_dockerfile
-    image: docker_oai_enb
+    image: juanluss31/docker_oai_enb:latest
     container_name: oaienb
     stdin_open: true
     tty: true
