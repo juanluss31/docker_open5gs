@@ -45,11 +45,6 @@ RUN git clone https://github.com/myriadrf/LimeSuite.git && \
     make -j`nproc` && make install && ldconfig && \
     cd ../udev-rules && sh ./install.sh
 
-# UHD drivers for USRP
-RUN add-apt-repository ppa:ettusresearch/uhd && \
-    apt update && apt -y install libuhd-dev uhd-host && \
-    uhd_images_downloader
-
 # Cloning RAN repository (eNB RAN + UE RAN)
 RUN git clone https://gitlab.eurecom.fr/oai/openairinterface5g.git && \
     cd openairinterface5g/ && git checkout develop
@@ -58,7 +53,7 @@ RUN git clone https://gitlab.eurecom.fr/oai/openairinterface5g.git && \
 WORKDIR openairinterface5g
 
 RUN . ./oaienv && cd cmake_targets && \
-    ./build_oai -I -w USRP --gNB --verbose-compile
+    ./build_oai -I -w USRP --gNB --verbose-compile --ninja
 
 CMD . ./oaienv && apt install -y iproute2 && /mnt/oai/oai_init.sh && cd cmake_targets/ran_build/build && \
     ./nr-softmodem -O $OPENAIR_DIR/targets/PROJECTS/GENERIC-NR-5GC/CONF/gnb.sa.band41.fr1.52PRB.usrpb210.conf --sa -d
