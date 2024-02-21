@@ -114,8 +114,8 @@ redis:
   port: 6379
 
 prometheus:
-  enabled: False
-  port: 8081    #If the API is run the API runs on the next port number up from this
+  enabled: True
+  port: 9091    #If the API is run the API runs on the next port number up from this
 
 snmp:
   port: 1161

@@ -20,3 +20,6 @@ scrape_configs:
   - job_name: 'mme'
     static_configs:
       - targets: ['MME_IP:9091']
+  - job_name: 'pyhss'
+    static_configs:
+      - targets: ['PYHSS_IP:9091']
