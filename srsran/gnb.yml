@@ -43,6 +43,6 @@ pcap:
 
 metrics:
   enable_json_metrics: false                                      # Enable reporting metrics in JSON format
-#   addr: METRICS_IP                                                # Metrics-server IP
-#   port: 9090                                                      # Metrics-server Port
+  addr: METRICS_IP                                                # Metrics-server IP
+  port: 9090                                                      # Metrics-server Port
   json_metrics_filename: /mnt/srsran/metric.json
