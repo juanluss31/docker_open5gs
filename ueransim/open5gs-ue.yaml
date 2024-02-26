@@ -10,7 +10,7 @@ key: 'UE1_KI'
 # Operator code (OP or OPC) of the UE
 op: 'UE1_OP'
 # This value specifies the OP type and it can be either 'OP' or 'OPC'
-opType: 'OP'
+opType: 'OPC'
 # Authentication Management Field (AMF) value
 amf: 'UE1_AMF'
 # IMEI number of the device. It is used if no SUPI is provided
@@ -29,7 +29,7 @@ uacAic:
 
 # UAC Access Control Class
 uacAcc:
-  normalClass: 0
+  normalClass: 2
   class11: false
   class12: false
   class13: false

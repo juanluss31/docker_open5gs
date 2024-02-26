@@ -42,7 +42,7 @@ pcap:
   gtpu_filename: /mnt/srsran/gnb_gtpu.pcap                        # Path where the GTP-U PCAP is stored.
 
 metrics:
-  enable_json_metrics: false                                      # Enable reporting metrics in JSON format
+  enable_json_metrics: true                                       # Enable reporting metrics in JSON format
   addr: METRICS_IP                                                # Metrics-server IP
-  port: 9090                                                      # Metrics-server Port
-  json_metrics_filename: /mnt/srsran/metric.json
+  port: 55555                                                     # Metrics-server Port
+# json_metrics_filename: /mnt/srsran/metric.json
