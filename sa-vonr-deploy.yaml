@@ -484,6 +484,52 @@ services:
     networks:
       default:
         ipv4_address: ${SMSC_IP}
+  metrics-server:
+    container_name: metrics_server
+    image: juanluss31/srsran_metrics_server:latest
+    environment:
+      - PORT=${METRICS_SERVER_PORT}
+      - BUCKET=${DOCKER_INFLUXDB_INIT_BUCKET}
+      - TESTBED=default
+      - URL=http://${DOCKER_INFLUXDB_INIT_HOST}:${DOCKER_INFLUXDB_INIT_PORT}
+      - ORG=${DOCKER_INFLUXDB_INIT_ORG}
+      - TOKEN=${DOCKER_INFLUXDB_INIT_ADMIN_TOKEN}
+    ports:
+      - 55555:${METRICS_SERVER_PORT}/udp
+    networks:
+      default:
+        ipv4_address: ${METRICS_SERVER_IP}
+  influxdb:
+    container_name: influxdb
+    image: influxdb:${DOCKER_INFLUXDB_VERSION}
+    volumes:
+      - influxdb-storage:/var/lib/influxdb2:rw
+    env_file:
+      - .env
+    restart: on-failure:10
+    # Uncomment port section to access InfluxDB from outside the docker network
+    # ports:
+    #   - 8086:${DOCKER_INFLUXDB_INIT_PORT}
+    networks:
+      default:
+        ipv4_address: ${INFLUXDB_IP}
+  grafana:
+    container_name: grafana
+    image: grafana/grafana-oss:${GRAFANA_VERSION}
+    volumes:
+      - grafana-storage:/var/lib/grafana:rw
+      - ./srsran/grafana/provisioning:/etc/grafana/provisioning
+      - ./srsran/grafana/dashboards:/etc/dashboards
+    env_file:
+      - .env
+    depends_on:
+      - influxdb
+      - metrics-server
+    ports:
+      - 3300:${GRAFANA_PORT}
+    networks:
+      default:
+        ipv4_address: ${GRAFANA_IP}
 networks:
   default:
     ipam:
