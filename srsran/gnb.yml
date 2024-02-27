@@ -9,8 +9,8 @@ ru_sdr:
   sync:                                                           # Specify the sync source used by the RF.
   srate: 15.36                                                    # RF sample rate might need to be adjusted according to selected bandwidth.
   otw_format: sc12
-  tx_gain: 80                                                     # Transmit gain of the RF might need to adjusted to the given situation.
-  rx_gain: 60                                                     # Receive gain of the RF might need to adjusted to the given situation.
+  tx_gain: 89                                                     # Transmit gain of the RF might need to adjusted to the given situation.
+  rx_gain: 75                                                     # Receive gain of the RF might need to adjusted to the given situation.
 
 cell_cfg:
   dl_arfcn: 370000                                                # ARFCN of the downlink carrier (center frequency).
@@ -43,6 +43,6 @@ pcap:
 
 metrics:
   enable_json_metrics: true                                       # Enable reporting metrics in JSON format
-  addr: METRICS_IP                                                # Metrics-server IP
+  addr: METRICS_SERVER_IP                                         # Metrics-server IP
   port: 55555                                                     # Metrics-server Port
 # json_metrics_filename: /mnt/srsran/metric.json

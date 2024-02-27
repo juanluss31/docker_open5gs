@@ -538,3 +538,5 @@ networks:
 volumes:
   mongodbdata: {}
   dbdata: {}
+  grafana-storage: {}
+  influxdb-storage: {}
