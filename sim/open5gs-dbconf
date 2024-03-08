@@ -7,15 +7,10 @@ display_help() {
     echo "   remove {imsi}: removes a user from the database"
     echo "   reset: WIPES OUT the database and restores it to an empty default"
     echo "   help: displays this message and exits"
-    echo "   add_ue_with_apn {imsi key opc apn}: adds a user to the database with a specific apn,"
-    echo "   add_ue_with_slice {imsi key opc apn sst sd}: adds a user to the database with a specific apn, sst and sd"
-    echo "   update_apn {imsi apn slice_num}: adds an APN to the slice number slice_num of an existent UE"
-    echo "   update_slice {imsi apn sst sd}: adds an slice to an existent UE"
+    echo "   add [0-9/all]: adds a user to the database, {0-9} means SIM card IMSI last number"
     echo "   showall: shows the list of subscriber in the db"
     echo "   showpretty: shows the list of subscriber in the db in a pretty json tree format"
     echo "   showfiltered: shows {imsi key opc apn ip} information of subscriber"
-    echo "   ambr_speed {imsi dl_value dl_unit ul_value ul_unit}: Change AMBR speed from a specific user and the  unit values are \"[0=bps 1=Kbps 2=Mbps 3=Gbps 4=Tbps ]\""
-    echo "   subscriber_status {imsi subscriber_status_val={0,1} operator_determined_barring={0..8}}: Change TS 29.272 values for Subscriber-Status (7.3.29) and Operator-Determined-Barring (7.3.30)"   
     echo "   install: installs mongosh"
 
 }
@@ -89,13 +84,13 @@ addSubscriber() {
                             {
                                 \"downlink\":
                                 {
-                                    \"value\": NumberInt(1),
-                                    \"unit\": NumberInt(3)
+                                    \"value\": NumberInt(3850),
+                                    \"unit\": NumberInt(1)
                                 },
                                 \"uplink\":
                                 {
-                                    \"value\": NumberInt(1),
-                                    \"unit\": NumberInt(3)
+                                    \"value\": NumberInt(1530),
+                                    \"unit\": NumberInt(1)
                                 }
                             },
                             \"pcc_rule\": [
@@ -127,6 +122,38 @@ addSubscriber() {
                                             }
                                         },
                                         \"index\": NumberInt(1),
+                                    },
+                                    \"_id\": new ObjectId(),
+                                    \"flow\": []
+                                },
+                                {
+                                    \"qos\" : {
+                                        \"arp\": {
+                                            \"priority_level\" : NumberInt(4),
+                                            \"pre_emption_capability\": NumberInt(2),
+                                            \"pre_emption_vulnerability\": NumberInt(2)
+                                        },
+                                        \"mbr\": {
+                                            \"downlink\" : {
+                                                \"value\": NumberInt(128),
+                                                \"unit\": NumberInt(1)
+                                            },
+                                            \"uplink\" : {
+                                                \"value\": NumberInt(128),
+                                                \"unit\": NumberInt(1)
+                                            }
+                                        },
+                                        \"gbr\": {
+                                            \"downlink\" : {
+                                                \"value\": NumberInt(128),
+                                                \"unit\": NumberInt(1)
+                                            },
+                                            \"uplink\" : {
+                                                \"value\": NumberInt(128),
+                                                \"unit\": NumberInt(1)
+                                            }
+                                        },
+                                        \"index\": NumberInt(2),
                                     },
                                     \"_id\": new ObjectId(),
                                     \"flow\": []
@@ -184,7 +211,7 @@ fi
 
 if [ "$1" = "remove" ]; then
     if [ "$#" -ne 2 ]; then
-        echo "open5gs-dbctl: incorrect number of args, format is \"open5gs-dbctl remove imsi\""
+        echo "open5gs-dbconf: incorrect number of args, format is \"open5gs-dbconf remove imsi\""
         exit 1
     fi
 
@@ -195,7 +222,7 @@ fi
 
 if [ "$1" = "reset" ]; then
     if [ "$#" -ne 1 ]; then
-        echo "open5gs-dbctl: incorrect number of args, format is \"open5gs-dbctl reset\""
+        echo "open5gs-dbconf: incorrect number of args, format is \"open5gs-dbconf reset\""
         exit 1
     fi
 
@@ -245,37 +272,24 @@ if [ "$1" = "add" ]; then
 
         fi
 
-        echo "open5gs-dbctl: incorrect number of args, format is \"open5gs-dbconf add [0-9/all]\""
+        echo "open5gs-dbconf: incorrect number of args, format is \"open5gs-dbconf add [0-9/all]\""
         exit 1
     fi
 
-    echo "open5gs-dbctl: incorrect number of args, format is \"open5gs-dbconf add [0-9/all]\""
+    echo "open5gs-dbconf: incorrect number of args, format is \"open5gs-dbconf add [0-9/all]\""
     exit 1
 fi
 
-if [ "$1" = "subscriber_status" ]; then
-    if [ "$#" -eq 4 ]; then
-        IMSI=$2
-        SUB_STATUS=$3
-        OP_DET_BARRING=$4
-        mongosh --eval "db.subscribers.updateOne({ \"imsi\": \"$IMSI\"},
-            {\$set: { \"subscriber_status\": $SUB_STATUS,
-                      \"operator_determined_barring\": $OP_DET_BARRING
-                    }
-            });" $DB_URI
-        exit $?
-    fi
-    echo "open5gs-dbctl: incorrect number of args, format is \"open5gs-dbctl subscriber_status imsi subscriber_status_val={0,1} operator_determined_barring={0..8}"
-    exit 1
-fi
 if [ "$1" = "showall" ]; then
    mongosh --eval "db.subscribers.find()" $DB_URI
         exit $?
 fi
+
 if [ "$1" = "showpretty" ]; then
    mongosh --eval "db.subscribers.find().pretty()" $DB_URI
         exit $?
 fi
+
 if [ "$1" = "showfiltered" ]; then
    mongosh --eval "db.subscribers.find({},{'_id':0,'imsi':1,'security.k':1, 'security.opc':1,'slice.session.name':1,'slice.session.ue.ipv4':1})" $DB_URI
         exit $?
