@@ -494,6 +494,8 @@ services:
       - URL=http://${DOCKER_INFLUXDB_INIT_HOST}:${DOCKER_INFLUXDB_INIT_PORT}
       - ORG=${DOCKER_INFLUXDB_INIT_ORG}
       - TOKEN=${DOCKER_INFLUXDB_INIT_ADMIN_TOKEN}
+    depends_on:
+      - influxdb
     ports:
       - 55555:${METRICS_SERVER_PORT}/udp
     networks:
