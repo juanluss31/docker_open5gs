@@ -23,6 +23,12 @@ cell_cfg:
   nof_antennas_ul: 2                                              # MIMO UL Antennas.
   nof_antennas_dl: 2                                              # MIMO DL Antennas.
 
+  pdsch:
+    mcs_table: qam64                                              # Sets the MCS table to use for PDSCH. Supported: [qam64, qam256]
+  
+  pusch:
+    mcs_table: qam64                                              # Sets the MCS table to use for PUSCH. Supported: [qam64, qam256]
+  
 log:
   filename: /mnt/srsran/gnb.log                                   # Path of the log file.
   all_level: warning                                              # Logging level applied to all layers.
