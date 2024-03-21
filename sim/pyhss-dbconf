@@ -57,7 +57,7 @@ while test $# -gt 0; do
   esac
 done
 
-DB_IP="127.0.0.1"
+DB_IP="${DB_IP:-127.0.0.1}"
 
 if [ "$1" = "apn" ]; then
 
