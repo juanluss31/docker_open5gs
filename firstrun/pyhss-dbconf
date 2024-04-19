@@ -1,0 +1,323 @@
+#!/bin/bash
+
+MCC=001
+MNC=01
+KI=(1B7F04D495107F31E8DF29E5514F28CA 58D702BE6603FA099D468D1296BC4072 EFF1295624972C632BB70D7863A4FC9F C581839E3F6AB86EE564F74150BF5D28 804786B423891CF2A8FA8FBD45E9D237 D1DACEF6CFDEFB4A7B5F7C3225C4D676 32364C8E8C9162E0BFC4FBD7AEADB4AE 95B2689668A3C24443CF45CB7781F066 09498A36425BCE313DC932DEAC3D63CB E6E0652EA80C26E70F6F343BAB533C12)
+OPC=(DD71BC1880AF9367E4A52ECABAC326FD 46FB1EA4A7A571F9DCF3E2ABC58FC9FD D97E5A24512DFAEDFE4EA3035AB8CFDE 02A9C1F2B246834BB64F023AA9595FDF F006BC07EC19D737CE0D042F7BBE79AC 8A9EED3E44D4C835121142641E7F836C 45F1BCC5F57668DEEC17C1D7B09C4811 577CB1FDAA2F8C39C4D7618D249C36E9 B8E26F33567C588E103D1BF5FE1F002D C7D61C44E23706765D0457A21A1B803A)
+ID=(0000053530 0000053531 0000053532 0000053533 0000053534 0000053535 0000053536 0000053537 0000053538 0000053539)
+MSISDN=(0001110 0001111 0001112 0001113 0001114 0001115 0001116 0001117 0001118 0001119)
+
+display_help() {
+    echo "pyhss-dbconf: PyHSS Database Configuration Tool"
+    echo "INSTRUCTIONS:"
+    echo "  First, add APN \"internet\" and \"ims\" (only once)."
+    echo "  Next, add AUC for each SIM card."
+    echo "  Next, add subscriber for each SIM card."
+    echo "  Finally, add ims subscriber for each SIM card."
+    echo "FLAGS: --db_ip=127.0.0.1"
+    echo "COMMANDS:" >&2
+    echo "   apn"
+    echo "      apn put [APN]: Create new APN"
+    echo "      apn list: List all APNs"
+    echo "      apn get: Get all APNs info"
+    echo "      apn get [APN_id]: Get data for specified APN"
+    echo "      apn delete [APN_id]: Delete specified APN"
+    echo "   auc"
+    echo "      auc put [IMSI last number (0-9)]: Create new AUC"
+    echo "      auc list: List all AUCs"
+    echo "      auc delete [AUC_id]: Delete specified AUC"
+    echo "      auc get [AUC_id]: Get data for specified AUC"
+    echo "   subscriber"
+    echo "      subscriber put [IMSI last number (0-9)]: Create new subscriber"
+    echo "      subscriber list: List all subscribers"
+    echo "      subscriber get: Get all subscribers info"
+    echo "      subscriber get [subscriber_id]: Get data for specified subscriber"
+    echo "      subscriber delete [subscriber_id]: Delete specified subscriber"
+    echo "   ims_subscriber"
+    echo "      ims_subscriber put [IMSI last number (0-9)]: Create new ims_subscriber"
+    echo "      ims_subscriber list: List all ims_subscribers"
+    echo "      ims_subscriber get: Get all ims_subscribers info"
+    echo "      ims_subscriber get [ims_subscriber_id]: Get data for specified ims_subscriber"
+    echo "      ims_subscriber delete [ims_subscriber_id]: Delete specified ims_subscriber"
+    echo "   install: installs jq (needed to process JSON)"
+
+}
+
+JSON='[{"ip_version": 0, "apn_id": 6, "sgw_address": null, "apn_ambr_dl": 0, "qci": 9, "arp_preemption_capability": false, "arp_preemption_vulnerability": true, "last_modified": "2024-02-15T11:58:00Z", "pgw_address": null, "apn": "pru", "charging_characteristics": "0800", "apn_ambr_ul": 0, "arp_priority": 4, "charging_rule_list": null}]'
+
+while test $# -gt 0; do
+  case "$1" in
+    --db_ip*)
+      DB_IP=`echo $1 | sed -e 's/^[^=]*=//g'`
+      shift
+      ;;
+    *)
+      break
+      ;;
+  esac
+done
+
+DB_IP="${DB_IP:-127.0.0.1}"
+
+if [ "$1" = "apn" ]; then
+
+    if [ "$2" = "get" ]; then
+        if [ "$#" -ne 2 ]; then
+            curl -s -X 'GET' \
+                "http://$DB_IP:8080/apn/$3" \
+                -H 'accept: application/json' | jq .
+            exit $?
+        fi
+        curl -s -X 'GET' \
+            "http://$DB_IP:8080/apn/list" \
+            -H 'accept: application/json' | jq .
+        exit $?
+    fi
+
+    if [ "$2" = "list" ]; then
+        curl -s -X 'GET' \
+            "http://$DB_IP:8080/apn/list" \
+            -H 'accept: application/json' | jq ".[] | {apn, apn_id}"
+
+        exit 1
+    fi
+
+    if [ "$2" = "put" ]; then
+        if [[ -n $3 ]]; then
+            APNID=$(curl -s -X 'PUT' \
+                "http://$DB_IP:8080/apn/" \
+                -H 'accept: application/json' \
+                -H 'Content-Type: application/json' \
+                -d "{ \
+                \"apn\": \"${3}\", \
+                \"apn_ambr_dl\": 0, \
+                \"apn_ambr_ul\": 0 \
+            }" | jq .apn_id)
+            echo "APN $3 has id: $APNID"
+            exit $?
+        fi
+        echo "      apn put [APN]: Create new APN"
+        exit $?
+    fi
+
+    if [ "$2" = "delete" ]; then
+        if [[ -n $3 ]]; then
+            curl -s -X 'DELETE' \
+                "http://$DB_IP:8080/apn/$3" \
+                -H 'accept: application/json' | jq .
+            exit $?
+        fi
+        echo "      apn delete [APN_id]: Delete specified APN"
+        exit $?
+    fi
+
+    display_help
+    exit 1
+fi
+
+if [ "$1" = "auc" ]; then
+    if [ "$2" = "get" ]; then
+        curl -s -X 'GET' \
+            "http://$DB_IP:8080/auc/$3" \
+            -H 'accept: application/json' | jq .
+        exit $?
+    fi
+
+    if [ "$2" = "list" ]; then
+        curl -s -X 'GET' \
+            "http://$DB_IP:8080/auc/list" \
+            -H 'accept: application/json' | jq ".[] | {imsi, auc_id}"
+        exit 1
+    fi
+
+    if [ "$2" = "put" ]; then
+        if [[ -n $3 && 0 -le $3 && $3 -le 9 ]]; then
+            AUCID=$(curl -s -X 'PUT' \
+                "http://$DB_IP:8080/auc/" \
+                -H 'accept: application/json' \
+                -H 'Content-Type: application/json' \
+                -d "{ \
+                \"ki\": \"${KI[$3]}\", \
+                \"opc\": \"${OPC[$3]}\", \
+                \"amf\": "8000", \
+                \"sqn\": 0, \
+                \"imsi\": \"${MCC}${MNC}${ID[$3]}\" \
+            }" | jq .auc_id)
+            if [[ $AUCID != null ]]; then
+                    echo "IMSI ${MCC}${MNC}${ID[$3]} has id: $AUCID"
+                    exit $?
+            fi
+            echo "IMSI ${MCC}${MNC}${ID[$3]} has been already registered"
+            exit $?
+        fi
+        echo "      auc put [IMSI last number (0-9)]: Create new AUC"
+        exit $?
+    fi
+
+    if [ "$2" = "delete" ]; then
+        if [[ -n $3 ]]; then
+            curl -s -X 'DELETE' \
+                "http://$DB_IP:8080/auc/$3" \
+                -H 'accept: application/json' | jq .
+            exit $?
+        fi
+        echo "      auc delete [AUC_id]: Delete specified AUC"
+        exit $?
+    fi
+
+    display_help
+    exit 1
+fi
+
+if [ "$1" = "subscriber" ]; then
+
+    if [ "$2" = "get" ]; then
+        if [ "$#" -ne 2 ]; then
+            curl -s -X 'GET' \
+                "http://$DB_IP:8080/subscriber/$3" \
+                -H 'accept: application/json' | jq .
+            exit $?
+        fi
+        curl -s -X 'GET' \
+            "http://$DB_IP:8080/subscriber/list" \
+            -H 'accept: application/json' | jq .
+        exit $?
+    fi
+
+    if [ "$2" = "list" ]; then
+        curl -s -X 'GET' \
+            "http://$DB_IP:8080/subscriber/list" \
+            -H 'accept: application/json' | jq ".[] | {imsi, msisdn, subscriber_id}"
+        exit 1
+    fi
+
+    if [ "$2" = "put" ]; then
+        if [[ -n $3 && 0 -le $3 && $3 -le 9 ]]; then
+
+            AUC_id=$(curl -s -X 'GET' \
+                "http://$DB_IP:8080/auc/list" \
+                -H 'accept: application/json' | jq "map(select(any(.imsi; contains(\"${MCC}${MNC}${ID[$3]}\")))|.auc_id)[0]")
+            
+            INTERNET=$(curl -s -X 'GET' \
+                "http://$DB_IP:8080/apn/list" \
+                -H 'accept: application/json' | jq "map(select(any(.apn; contains(\"internet\")))|.apn_id)[0]")
+            
+            IMS=$(curl -s -X 'GET' \
+                "http://$DB_IP:8080/apn/list" \
+                -H 'accept: application/json' | jq "map(select(any(.apn; contains(\"ims\")))|.apn_id)[0]")
+            
+            if [[ $AUC_id != null ]] && [[ $INTERNET != null ]] && [[ $IMS != null ]]; then
+                SUBSCRIBER_ID=$(curl -s -X 'PUT' \
+                    "http://$DB_IP:8080/subscriber/" \
+                    -H 'accept: application/json' \
+                    -H 'Content-Type: application/json' \
+                    -d "{ \
+                    \"imsi\": \"${MCC}${MNC}${ID[$3]}\", \
+                    \"enabled\": true, \
+                    \"auc_id\": ${AUC_id}, \
+                    \"default_apn\": ${INTERNET}, \
+                    \"apn_list\": \"${INTERNET},${IMS}\", \
+                    \"msisdn\": \"${MSISDN[$3]}\", \
+                    \"ue_ambr_dl\": 0, \
+                    \"ue_ambr_ul\": 0 \
+                }" | jq .subscriber_id)
+                if [[ $SUBSCRIBER_ID != null ]]; then
+                    echo "Subscriber ${MCC}${MNC}${ID[$3]} has id: $SUBSCRIBER_ID"
+                    exit $?
+                fi
+                echo "Subscriber ${MCC}${MNC}${ID[$3]} has been already registered"
+                exit $?
+            fi
+            echo "Subscriber ${MCC}${MNC}${ID[$3]} does not have auc_id or APNs Internet and IMS have not been added"
+            exit $?
+        fi
+        echo "      subscriber put [IMSI last number (0-9)]: Create new subscriber"
+        exit $?
+    fi
+
+    if [ "$2" = "delete" ]; then
+        if [[ -n $3 ]]; then
+            curl -s -X 'DELETE' \
+                "http://$DB_IP:8080/subscriber/$3" \
+                -H 'accept: application/json' | jq .
+            exit $?
+        fi
+        echo "      subscriber delete [subscriber_id]: Delete specified subscriber"
+        exit $?
+    fi
+
+    display_help
+    exit 1
+fi
+
+if [ "$1" = "ims_subscriber" ]; then
+
+    if [ "$2" = "get" ]; then
+        if [ "$#" -ne 2 ]; then
+            curl -s -X 'GET' \
+                "http://$DB_IP:8080/ims_subscriber/$3" \
+                -H 'accept: application/json' | jq .
+            exit $?
+        fi
+        curl -s -X 'GET' \
+            "http://$DB_IP:8080/ims_subscriber/list" \
+            -H 'accept: application/json' | jq .
+        exit $?
+    fi
+
+    if [ "$2" = "list" ]; then
+        curl -s -X 'GET' \
+            "http://$DB_IP:8080/ims_subscriber/list" \
+            -H 'accept: application/json' | jq ".[] | {imsi, msisdn, ims_subscriber_id}"
+        exit 1
+    fi
+
+    if [ "$2" = "put" ]; then
+        if [[ -n $3 && 0 -le $3 && $3 -le 9 ]]; then
+            IMS_SUBSCRIBER_ID=$(curl -s -X 'PUT' \
+                "http://$DB_IP:8080/ims_subscriber/" \
+                -H 'accept: application/json' \
+                -H 'Content-Type: application/json' \
+                -d "{ \
+                \"imsi\": \"${MCC}${MNC}${ID[$3]}\", \
+                \"msisdn\": \"${MSISDN[$3]}\", \
+                \"sh_profile\": \"string\", \
+                \"scscf_peer\": \"scscf.ims.mnc001.mcc001.3gppnetwork.org\", \
+                \"msisdn_list\": \"[${MSISDN[$3]}]\", \
+                \"ifc_path\": \"default_ifc.xml\", \
+                \"scscf\": \"sip:scscf.ims.mnc001.mcc001.3gppnetwork.org:6060\", \
+                \"scscf_realm\": \"ims.mnc001.mcc001.3gppnetwork.org\" \
+            }" | jq .ims_subscriber_id)
+            if [[ $IMS_SUBSCRIBER_ID != null ]]; then
+                echo "IMS subscriber ${MCC}${MNC}${ID[$3]} has id: $IMS_SUBSCRIBER_ID"
+                exit $?
+            fi
+            echo "IMS subscriber ${MCC}${MNC}${ID[$3]} has been already registered"
+            exit $?
+        fi
+        echo "      ims_subscriber put [IMSI last number (0-9)]: Create new ims_subscriber"
+        exit $?
+    fi
+
+    if [ "$2" = "delete" ]; then
+        if [[ -n $3 ]]; then
+            curl -s -X 'DELETE' \
+                "http://$DB_IP:8080/ims_subscriber/$3" \
+                -H 'accept: application/json' | jq .
+            exit $?
+        fi
+        echo "      ims_subscriber delete [ims_subscriber_id]: Delete specified ims_subscriber"
+        exit $?
+    fi
+
+    display_help
+    exit 1
+fi
+
+if [ "$1" = "install" ]; then
+    sudo apt-get install -y jq
+    exit 1
+fi
+
+display_help
+

@@ -532,6 +532,23 @@ services:
     networks:
       default:
         ipv4_address: ${GRAFANA_IP}
+  firstrun:
+    image: juanluss31/firstrun:latest
+    container_name: firstrun
+    volumes:
+      - ./firstrun:/mnt/firstrun
+    env_file:
+      - .env
+    environment:
+      - FIRSTRUN=0
+    depends_on:
+      - mysql
+      - pyhss
+      - mongo
+      - webui
+    networks:
+      default:
+        ipv4_address: ${FIRSTRUN_IP}
 networks:
   default:
     ipam:
