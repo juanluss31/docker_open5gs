@@ -1,0 +1,18 @@
+version: '3'
+services:
+  firstrun:
+    image: juanluss31/firstrun:latest
+    container_name: firstrun
+    volumes:
+      - ./firstrun:/mnt/firstrun
+    env_file:
+      - .env
+    environment:
+      - FIRSTRUN=0
+    networks:
+      default:
+        ipv4_address: ${FIRSTRUN_IP}
+networks:
+  default:
+    external:
+      name: docker_open5gs_default
