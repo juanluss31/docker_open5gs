@@ -8,7 +8,7 @@ services:
     env_file:
       - .env
     environment:
-      - FIRSTRUN=0
+      - FIRSTRUN=1
     networks:
       default:
         ipv4_address: ${FIRSTRUN_IP}
