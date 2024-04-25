@@ -1,9 +1,10 @@
-name: Docker ueransim
+name: Docker firstrun
 
 on:
   push:
     paths:
       - firstrun/Dockerfile
+      - firstrun/firstrun_init.sh
   workflow_dispatch:
   
 jobs:
