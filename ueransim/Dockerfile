@@ -43,7 +43,8 @@ RUN apt-get update && \
         ifupdown \
         iputils-ping \
         wget \
-        libssl-dev
+        libssl-dev \
+        traceroute
 
 RUN version=3.20 && \
     build=0 && \
