@@ -49,8 +49,8 @@ if [ "$1" == "card" ]; then
         --msisdn=${MSISDN[$2]} \
         -k ${KI[$2]} \
         -o ${OPC[$2]} \
-        --acc=$ACC \
-        --write-csv=prueba.csv"
+        --acc=$ACC"
+ #       --write-csv=prueba.csv \
  #       --ims-hdomain=$IMS_HDOMAIN \
  #       --impi=${MCC}${MNC}${ID[$2]}@$IMS_HDOMAIN \
  #       --impu="sip:${MCC}${MNC}${ID[$2]}@$IMS_HDOMAIN" \
