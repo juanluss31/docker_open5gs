@@ -43,8 +43,7 @@ RUN apt-get update && \
         ifupdown \
         iputils-ping \
         wget \
-        libssl-dev \
-        traceroute
+        libssl-dev
 
 RUN version=3.20 && \
     build=0 && \
@@ -77,7 +76,8 @@ RUN apt-get update && \
         netbase \
         ifupdown \
         net-tools \
-        iputils-ping && \
+        iputils-ping \
+        traceroute && \
     apt-get autoremove -y && apt-get autoclean
 
 COPY --from=builder /UERANSIM/build /UERANSIM/build
