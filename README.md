@@ -200,11 +200,11 @@ The script contains data from 10 sysmoISIM-SJA2 SIM cards:
 
 Note: 
 IMSI 999700000053530 is formed by:
-´´´
+```
 | MCC  | 999        |
 | MNC  | 70         |
 | MSIN | 0000053530 |
-´´´
+```
 So, each IMSI has to be changed if other MCC and MNC is used.
 
 For example, this project works with MCC: 001 and MNC: 01.
