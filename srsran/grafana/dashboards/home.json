@@ -18,6 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
+  "id": 2,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -925,7 +926,7 @@
       },
       "gridPos": {
         "h": 6,
-        "w": 12,
+        "w": 6,
         "x": 0,
         "y": 16
       },
@@ -1013,6 +1014,123 @@
           },
           "decimals": 0,
           "mappings": [],
+          "max": 6,
+          "min": 2,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 6,
+        "y": 16
+      },
+      "id": 35,
+      "options": {
+        "legend": {
+          "calcs": [
+            "last"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "10.1.5",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "JOSE3g9KVz"
+          },
+          "query": "from(bucket: \"srsran\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ue_info\")  \n  |> filter(fn: (r) => r[\"testbed\"] == \"default\")\n  |> filter(fn: (r) => r[\"_field\"] == \"dl_mcs\")\n  |> map(fn: (r) => ({\n    r with \n    category: if r._value >= 0 and r._value <= 14 then 2\n              else if r._value >= 15 and r._value <= 20 then 4\n              else if r._value >= 21 and r._value <= 28 then 6\n              else if r._value == 29 then 2\n              else if r._value == 30 then 4\n              else 6 }))",
+          "refId": "Downlink"
+        }
+      ],
+      "title": "DL Modulation Order",
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "_time",
+                "category {_field=\"dl_mcs\", _start=\"2024-09-16 12:01:49.507 +0000 UTC\", _stop=\"2024-09-16 12:06:49.507 +0000 UTC\", rnti=\"4601\", testbed=\"default\"}"
+              ],
+              "pattern": "^.*(_time|category).*$"
+            }
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": ".*rnti=\"(\\w+).*$",
+            "renamePattern": "UE $1"
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "JOSE3g9KVz"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": 30000,
+            "lineInterpolation": "stepAfter",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 7,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "dashed"
+            }
+          },
+          "decimals": 0,
+          "mappings": [],
           "max": 31,
           "min": 0,
           "thresholds": {
@@ -1030,7 +1148,7 @@
       },
       "gridPos": {
         "h": 6,
-        "w": 12,
+        "w": 6,
         "x": 12,
         "y": 16
       },
@@ -1072,12 +1190,597 @@
       "type": "timeseries"
     },
     {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "JOSE3g9KVz"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": 30000,
+            "lineInterpolation": "stepAfter",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 7,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "dashed"
+            }
+          },
+          "decimals": 0,
+          "mappings": [],
+          "max": 6,
+          "min": 2,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 18,
+        "y": 16
+      },
+      "id": 41,
+      "options": {
+        "legend": {
+          "calcs": [
+            "last"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "10.1.5",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "JOSE3g9KVz"
+          },
+          "query": "from(bucket: \"srsran\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ue_info\")  \n  |> filter(fn: (r) => r[\"testbed\"] == \"default\")\n  |> filter(fn: (r) => r[\"_field\"] == \"ul_mcs\")\n  |> map(fn: (r) => ({\n    r with \n    category: if r._value >= 0 and r._value <= 14 then 2\n              else if r._value >= 15 and r._value <= 20 then 4\n              else if r._value >= 21 and r._value <= 28 then 6\n              else if r._value == 29 then 2\n              else if r._value == 30 then 4\n              else 6 }))",
+          "refId": "Downlink"
+        }
+      ],
+      "title": "UL Modulation Order",
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "_time",
+                "category {_field=\"dl_mcs\", _start=\"2024-09-16 12:01:49.507 +0000 UTC\", _stop=\"2024-09-16 12:06:49.507 +0000 UTC\", rnti=\"4601\", testbed=\"default\"}"
+              ],
+              "pattern": "^.*(_time|category).*$"
+            }
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": ".*rnti=\"(\\w+).*$",
+            "renamePattern": "UE $1"
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "JOSE3g9KVz"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": 30000,
+            "lineInterpolation": "stepAfter",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 7,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "dashed"
+            }
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 0,
+        "y": 22
+      },
+      "id": 42,
+      "options": {
+        "legend": {
+          "calcs": [
+            "last"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "10.1.5",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "JOSE3g9KVz"
+          },
+          "query": "from(bucket: \"srsran\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ue_info\")  \n  |> filter(fn: (r) => r[\"testbed\"] == \"default\")\n  |> filter(fn: (r) => r[\"_field\"] == \"dl_mcs\")\n  |> map(fn: (r) => ({\n    r with \n    category: if r._value == 0 then 30\n              else if r._value == 1 then 40\n              else if r._value == 2 then 50\n              else if r._value == 3 then 64\n              else if r._value == 4 then 78\n              else if r._value == 5 then 99\n              else if r._value == 6 then 120\n              else if r._value == 7 then 157\n              else if r._value == 8 then 193\n              else if r._value == 9 then 251\n              else if r._value == 10 then 308\n              else if r._value == 11 then 379\n              else if r._value == 12 then 449\n              else if r._value == 13 then 526\n              else if r._value == 14 then 602\n              else if r._value == 15 then 340\n              else if r._value == 16 then 378\n              else if r._value == 17 then 434\n              else if r._value == 18 then 490\n              else if r._value == 19 then 553\n              else if r._value == 20 then 616\n              else if r._value == 21 then 438\n              else if r._value == 22 then 466\n              else if r._value == 23 then 517\n              else if r._value == 24 then 567\n              else if r._value == 25 then 616\n              else if r._value == 26 then 666\n              else if r._value == 27 then 719\n              else 772}))",
+          "refId": "Downlink"
+        }
+      ],
+      "title": "DL Target Code Rate [x1024]",
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "_time",
+                "category {_field=\"dl_mcs\", _start=\"2024-09-16 12:01:49.507 +0000 UTC\", _stop=\"2024-09-16 12:06:49.507 +0000 UTC\", rnti=\"4601\", testbed=\"default\"}"
+              ],
+              "pattern": "^.*(_time|category).*$"
+            }
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": ".*rnti=\"(\\w+).*$",
+            "renamePattern": "UE $1"
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "JOSE3g9KVz"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": 30000,
+            "lineInterpolation": "stepAfter",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 7,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "dashed"
+            }
+          },
+          "decimals": 4,
+          "mappings": [],
+          "max": 4.6,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 6,
+        "y": 22
+      },
+      "id": 44,
+      "options": {
+        "legend": {
+          "calcs": [
+            "last"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "10.1.5",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "JOSE3g9KVz"
+          },
+          "query": "from(bucket: \"srsran\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ue_info\")  \n  |> filter(fn: (r) => r[\"testbed\"] == \"default\")\n  |> filter(fn: (r) => r[\"_field\"] == \"dl_mcs\")\n  |> map(fn: (r) => ({\n    r with \n    category: if r._value == 0 then 0.0586\n              else if r._value == 1 then 0.0781\n              else if r._value == 2 then 0.0977\n              else if r._value == 3 then 0.1250\n              else if r._value == 4 then 0.1523\n              else if r._value == 5 then 0.1934\n              else if r._value == 6 then 0.2344\n              else if r._value == 7 then 0.3066\n              else if r._value == 8 then 0.3770\n              else if r._value == 9 then 0.4902\n              else if r._value == 10 then 0.6016\n              else if r._value == 11 then 0.7402\n              else if r._value == 12 then 0.8770\n              else if r._value == 13 then 1.0273\n              else if r._value == 14 then 1.1758\n              else if r._value == 15 then 1.3281\n              else if r._value == 16 then 1.4766\n              else if r._value == 17 then 1.6953\n              else if r._value == 18 then 1.9141\n              else if r._value == 19 then 2.1602\n              else if r._value == 20 then 2.4063\n              else if r._value == 21 then 2.5664\n              else if r._value == 22 then 2.7305\n              else if r._value == 23 then 3.0293\n              else if r._value == 24 then 3.3223\n              else if r._value == 25 then 3.6094\n              else if r._value == 26 then 3.9023\n              else if r._value == 27 then 4.2129\n              else 4.5234}))",
+          "refId": "Downlink"
+        }
+      ],
+      "title": "DL Spectral efficiency",
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "_time",
+                "category {_field=\"dl_mcs\", _start=\"2024-09-16 12:01:49.507 +0000 UTC\", _stop=\"2024-09-16 12:06:49.507 +0000 UTC\", rnti=\"4601\", testbed=\"default\"}"
+              ],
+              "pattern": "^.*(_time|category).*$"
+            }
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": ".*rnti=\"(\\w+).*$",
+            "renamePattern": "UE $1"
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "JOSE3g9KVz"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": 30000,
+            "lineInterpolation": "stepAfter",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 7,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "dashed"
+            }
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 12,
+        "y": 22
+      },
+      "id": 43,
+      "options": {
+        "legend": {
+          "calcs": [
+            "last"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "10.1.5",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "JOSE3g9KVz"
+          },
+          "query": "from(bucket: \"srsran\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ue_info\")  \n  |> filter(fn: (r) => r[\"testbed\"] == \"default\")\n  |> filter(fn: (r) => r[\"_field\"] == \"ul_mcs\")\n  |> map(fn: (r) => ({\n    r with \n    category: if r._value == 0 then 30\n              else if r._value == 1 then 40\n              else if r._value == 2 then 50\n              else if r._value == 3 then 64\n              else if r._value == 4 then 78\n              else if r._value == 5 then 99\n              else if r._value == 6 then 120\n              else if r._value == 7 then 157\n              else if r._value == 8 then 193\n              else if r._value == 9 then 251\n              else if r._value == 10 then 308\n              else if r._value == 11 then 379\n              else if r._value == 12 then 449\n              else if r._value == 13 then 526\n              else if r._value == 14 then 602\n              else if r._value == 15 then 340\n              else if r._value == 16 then 378\n              else if r._value == 17 then 434\n              else if r._value == 18 then 490\n              else if r._value == 19 then 553\n              else if r._value == 20 then 616\n              else if r._value == 21 then 438\n              else if r._value == 22 then 466\n              else if r._value == 23 then 517\n              else if r._value == 24 then 567\n              else if r._value == 25 then 616\n              else if r._value == 26 then 666\n              else if r._value == 27 then 719\n              else 772}))",
+          "refId": "Downlink"
+        }
+      ],
+      "title": "UL Target Code Rate [x1024]",
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "_time",
+                "category {_field=\"dl_mcs\", _start=\"2024-09-16 12:01:49.507 +0000 UTC\", _stop=\"2024-09-16 12:06:49.507 +0000 UTC\", rnti=\"4601\", testbed=\"default\"}"
+              ],
+              "pattern": "^.*(_time|category).*$"
+            }
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": ".*rnti=\"(\\w+).*$",
+            "renamePattern": "UE $1"
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "JOSE3g9KVz"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": 30000,
+            "lineInterpolation": "stepAfter",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 7,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "dashed"
+            }
+          },
+          "decimals": 4,
+          "mappings": [],
+          "max": 4.6,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 18,
+        "y": 22
+      },
+      "id": 45,
+      "options": {
+        "legend": {
+          "calcs": [
+            "last"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "10.1.5",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "JOSE3g9KVz"
+          },
+          "query": "from(bucket: \"srsran\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ue_info\")  \n  |> filter(fn: (r) => r[\"testbed\"] == \"default\")\n  |> filter(fn: (r) => r[\"_field\"] == \"ul_mcs\")\n  |> map(fn: (r) => ({\n    r with \n    category: if r._value == 0 then 0.0586\n              else if r._value == 1 then 0.0781\n              else if r._value == 2 then 0.0977\n              else if r._value == 3 then 0.1250\n              else if r._value == 4 then 0.1523\n              else if r._value == 5 then 0.1934\n              else if r._value == 6 then 0.2344\n              else if r._value == 7 then 0.3066\n              else if r._value == 8 then 0.3770\n              else if r._value == 9 then 0.4902\n              else if r._value == 10 then 0.6016\n              else if r._value == 11 then 0.7402\n              else if r._value == 12 then 0.8770\n              else if r._value == 13 then 1.0273\n              else if r._value == 14 then 1.1758\n              else if r._value == 15 then 1.3281\n              else if r._value == 16 then 1.4766\n              else if r._value == 17 then 1.6953\n              else if r._value == 18 then 1.9141\n              else if r._value == 19 then 2.1602\n              else if r._value == 20 then 2.4063\n              else if r._value == 21 then 2.5664\n              else if r._value == 22 then 2.7305\n              else if r._value == 23 then 3.0293\n              else if r._value == 24 then 3.3223\n              else if r._value == 25 then 3.6094\n              else if r._value == 26 then 3.9023\n              else if r._value == 27 then 4.2129\n              else 4.5234}))",
+          "refId": "Downlink"
+        }
+      ],
+      "title": "UL Spectral efficiency",
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "_time",
+                "category {_field=\"dl_mcs\", _start=\"2024-09-16 12:01:49.507 +0000 UTC\", _stop=\"2024-09-16 12:06:49.507 +0000 UTC\", rnti=\"4601\", testbed=\"default\"}"
+              ],
+              "pattern": "^.*(_time|category).*$"
+            }
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": ".*rnti=\"(\\w+).*$",
+            "renamePattern": "UE $1"
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 22
+        "y": 28
       },
       "id": 33,
       "panels": [],
@@ -1131,8 +1834,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           },
@@ -1144,7 +1846,7 @@
         "h": 6,
         "w": 12,
         "x": 0,
-        "y": 23
+        "y": 29
       },
       "id": 1,
       "options": {
@@ -1230,8 +1932,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           },
@@ -1243,7 +1944,7 @@
         "h": 6,
         "w": 12,
         "x": 12,
-        "y": 23
+        "y": 29
       },
       "id": 16,
       "options": {
@@ -1334,8 +2035,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           },
@@ -1347,7 +2047,7 @@
         "h": 6,
         "w": 12,
         "x": 0,
-        "y": 29
+        "y": 35
       },
       "id": 19,
       "options": {
@@ -1438,8 +2138,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           },
@@ -1451,7 +2150,7 @@
         "h": 6,
         "w": 12,
         "x": 12,
-        "y": 29
+        "y": 35
       },
       "id": 20,
       "options": {
@@ -1496,7 +2195,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 35
+        "y": 41
       },
       "id": 32,
       "panels": [],
@@ -1557,8 +2256,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1574,7 +2272,7 @@
         "h": 6,
         "w": 12,
         "x": 0,
-        "y": 36
+        "y": 42
       },
       "id": 23,
       "options": {
@@ -1687,8 +2385,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1704,7 +2401,7 @@
         "h": 6,
         "w": 12,
         "x": 12,
-        "y": 36
+        "y": 42
       },
       "id": 24,
       "options": {
@@ -1816,8 +2513,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           },
@@ -1829,7 +2525,7 @@
         "h": 6,
         "w": 12,
         "x": 0,
-        "y": 42
+        "y": 48
       },
       "id": 21,
       "options": {
@@ -1945,8 +2641,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           },
@@ -1958,7 +2653,7 @@
         "h": 6,
         "w": 12,
         "x": 12,
-        "y": 42
+        "y": 48
       },
       "id": 22,
       "options": {
@@ -2053,6 +2748,6 @@
   "timezone": "",
   "title": "srsRAN Project Metrics",
   "uid": "a8a69f8a-1dd1-4496-8f3f-33de8988a823",
-  "version": 5,
+  "version": 6,
   "weekStart": ""
 }
